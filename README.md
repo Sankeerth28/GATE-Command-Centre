@@ -10,7 +10,9 @@
 An intelligent, full-stack academic execution and examination management command centre built specifically for serious aspirants preparing for **GATE 2027: Data Science and Artificial Intelligence (Paper Code: DA)**.
 
 Target Exam Date: **February 6, 2027 at 09:30 AM IST**  
-Target Syllabus Completion: **January 15, 2027**
+Target Syllabus Completion: **January 15, 2027**  
+Live Deployment: **[https://sankeerth28.github.io/GATE-Command-Centre/](https://sankeerth28.github.io/GATE-Command-Centre/)**  
+Detailed Syllabus & Study Plan: **[SYLLABUS_AND_PLAN.md](./SYLLABUS_AND_PLAN.md)**
 
 ---
 
