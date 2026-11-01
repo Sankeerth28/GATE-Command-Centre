@@ -37,7 +37,7 @@ jobs:
         env:
           PYTHONPATH: backend
         run: |
-          pytest backend/tests/test_full_suite.py -v
+          python -m pytest backend/tests/test_full_suite.py -v
 
   build-frontend:
     name: Build Frontend for GitHub Pages
@@ -47,10 +47,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js 20
+      - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
@@ -81,3 +81,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+

@@ -2,8 +2,14 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from app.main import app
-from app.core.database import get_session
+from app.core.database import get_session, init_db, engine
 from app.core.config import settings
+from app.services.seed_data import seed_official_syllabus
+
+# Ensure DB schema and seed data are initialized
+init_db()
+with Session(engine) as _init_session:
+    seed_official_syllabus(_init_session)
 
 client = TestClient(app)
 
