@@ -18,6 +18,9 @@ export const SettingsPage: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string>('');
   const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
+  const [backendUrl, setBackendUrl] = useState(
+    typeof window !== 'undefined' ? localStorage.getItem('gate_backend_url') || '' : ''
+  );
 
   useEffect(() => {
     const load = async () => {
@@ -40,6 +43,11 @@ export const SettingsPage: React.FC = () => {
 
     try {
       setSaving(true);
+      if (backendUrl.trim()) {
+        localStorage.setItem('gate_backend_url', backendUrl.trim());
+      } else {
+        localStorage.removeItem('gate_backend_url');
+      }
       const updated = await api.updateSettings(settings);
       setSettings(updated);
       setMessage('Settings saved successfully!');
@@ -229,13 +237,53 @@ export const SettingsPage: React.FC = () => {
 
       {/* Data Management & Full Backup */}
       <div className="glass-panel p-5 rounded-xl space-y-4">
-        <h3 className="font-semibold text-sm text-white flex items-center gap-2">
-          <Database className="w-4 h-4 text-success" />
-          <span>Local Data Ownership & Database Management</span>
-        </h3>
-        <p className="text-xs text-muted">
-          Your preparation data is stored locally in SQLite with WAL mode. You have full user ownership of your database.
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-sm text-white flex items-center gap-2">
+            <Database className="w-4 h-4 text-success" />
+            <span>Local Data Ownership & Database Management</span>
+          </h3>
+          <span
+            className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+              api.isOfflineMode()
+                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                : 'bg-primary/20 text-primary-light border-primary/30'
+            }`}
+          >
+            {api.isOfflineMode() ? '● Browser Local Storage (GitHub Pages)' : '● Live SQLite Backend'}
+          </span>
+        </div>
+
+        <p className="text-xs text-muted leading-relaxed">
+          {api.isOfflineMode()
+            ? 'Running in standalone client mode. All study logs, syllabus progress, timer sessions, and mock exams persist locally in your browser. Use the JSON backup to easily move your data between devices.'
+            : 'Your preparation data is stored locally in SQLite with WAL mode. You have full user ownership of your database.'}
         </p>
+
+        {/* Backend API Configuration (Optional) */}
+        <div className="p-3 rounded-lg bg-surface-card border border-border space-y-2">
+          <label className="text-xs font-semibold text-white block">
+            Remote Backend API URL (Optional)
+          </label>
+          <p className="text-[11px] text-muted">
+            Leave blank to use built-in browser storage on GitHub Pages, or connect to your self-hosted FastAPI server.
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="url"
+              placeholder="e.g. https://my-gate-api.onrender.com"
+              value={backendUrl}
+              onChange={(e) => setBackendUrl(e.target.value)}
+              className="flex-1 p-2 rounded-lg bg-surface border border-border text-white text-xs font-mono focus:outline-none focus:border-primary"
+            />
+            <button
+              type="button"
+              onClick={handleSaveSettings}
+              className="px-3 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
           <button
@@ -258,17 +306,30 @@ export const SettingsPage: React.FC = () => {
             <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
           </label>
 
-          <a
-            href="/api/data/download-db"
-            download
-            className="p-3 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs text-slate-200 transition-colors flex items-center gap-2.5"
-          >
-            <Database className="w-4 h-4 text-success" />
-            <div className="text-left">
-              <div className="font-semibold">Download SQLite File</div>
-              <div className="text-[10px] text-muted">gate_command_centre.db</div>
-            </div>
-          </a>
+          {api.isOfflineMode() ? (
+            <button
+              onClick={handleExportJson}
+              className="p-3 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs text-slate-200 transition-colors flex items-center gap-2.5"
+            >
+              <Database className="w-4 h-4 text-success" />
+              <div className="text-left">
+                <div className="font-semibold">Export Storage Snapshot</div>
+                <div className="text-[10px] text-muted">Browser JSON format</div>
+              </div>
+            </button>
+          ) : (
+            <a
+              href="/api/data/download-db"
+              download
+              className="p-3 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs text-slate-200 transition-colors flex items-center gap-2.5"
+            >
+              <Database className="w-4 h-4 text-success" />
+              <div className="text-left">
+                <div className="font-semibold">Download SQLite File</div>
+                <div className="text-[10px] text-muted">gate_command_centre.db</div>
+              </div>
+            </a>
+          )}
         </div>
 
         {/* Destructive Safe Reset */}

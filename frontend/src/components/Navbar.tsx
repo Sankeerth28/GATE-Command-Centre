@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Sun, Moon, Search } from 'lucide-react';
+import { Sparkles, Sun, Moon, Search, ShieldCheck } from 'lucide-react';
+import { api } from '../services/api';
 
 interface Props {
   onOpenAssistant: (initialMode?: string) => void;
@@ -48,6 +49,15 @@ export const Navbar: React.FC<Props> = ({ onOpenAssistant, onOpenCommandPalette 
               <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-primary/20 text-primary-light border border-primary/30">
                 v3.0
               </span>
+              {api.isOfflineMode() && (
+                <span
+                  className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hidden sm:inline-flex items-center gap-1"
+                  title="Operating in standalone browser mode with persistent LocalStorage"
+                >
+                  <ShieldCheck className="w-2.5 h-2.5" />
+                  <span>Browser Storage</span>
+                </span>
+              )}
             </div>
             <p className="text-[11px] text-muted hidden sm:block">
               GATE 2027 DA • Data Science & Artificial Intelligence
