@@ -1,55 +1,56 @@
 # GATE 2027 Command Centre: Complete Syllabus & Personalized Execution Plan
 
 > **Target Examination:** GATE 2027 — Data Science & Artificial Intelligence (DA)  
-> **Exam Date:** February 6, 2027 (09:30 AM IST)  
+> **Official Exam Date:** February 6, 2027 (09:30 AM IST)  
 > **Preparation Start Date:** November 2, 2026  
 > **Syllabus Target Completion Deadline:** January 15, 2027 (Hard Deadline)  
 > **Total Curriculum Scope:** 7 Subjects | 20 Chapters | 51 Topics | 299 Estimated Focused Hours  
 > **Weekly Study Capacity:** 39.0 Focused Hours (Mon–Sat: 6.0h / day, Sun: 3.0h revision)  
 > **Primary Target:** 80+ Marks (All India Rank < 100)  
 > **Timezone:** Asia/Kolkata (IST)  
-> **Tracking Portal:** [https://sankeerth28.github.io/GATE-Command-Centre/](https://sankeerth28.github.io/GATE-Command-Centre/)
+> **Live Web Application:** [https://sankeerth28.github.io/GATE-Command-Centre/](https://sankeerth28.github.io/GATE-Command-Centre/)  
+> **GitHub Repository:** [https://github.com/Sankeerth28/GATE-Command-Centre](https://github.com/Sankeerth28/GATE-Command-Centre)
 
 ---
 
 ## 1. Executive Summary & Strategy Overview
 
-The **GATE Command Centre** is engineered to replace vague, disorganized exam prep with an automated, algorithmically balanced study and revision system tailored specifically for **GATE DA 2027**.
+The **GATE Command Centre** is engineered to replace disorganized exam prep with an automated, algorithmically balanced study and revision operating system tailored specifically for **GATE DA 2027**.
 
-The preparation model is built on five core operational pillars:
-1. **Official GATE DA Syllabus Coverage:** All 7 official subjects and 51 topics mapped with explicit subtopic checklists, weightages, and difficulty ratings.
-2. **Weekly 39-Hour Timetable Matrix:** A balanced multi-subject weekly allocation distributing 39 hours across the 7 subjects (Probability & Statistics 6h, Linear Algebra 6h, Calculus & Optimization 4.5h, Programming & DSA 6h, DBMS 5h, Machine Learning & AI 7h, General Aptitude 4.5h).
-3. **Phase-Driven Milestone Progression:** Four strict preparation phases spanning Nov 2, 2026 to Jan 15, 2027, followed by a dedicated Full-Length Mock Examination period (Jan 16 – Feb 5, 2027) targeting 10–15 proctored mocks.
+The preparation architecture implements five core operational pillars:
+1. **Canonical GATE DA Syllabus Mapping:** All 7 official subjects, 20 chapters, and 51 topics mapped with explicit subtopic checklists, exam weightages, priorities, and difficulty ratings.
+2. **Weekly 39-Hour Timetable Matrix:** A multi-subject weekly distribution allocating 39 focused hours across all 7 subjects (Probability & Statistics 6h, Linear Algebra 6h, Calculus & Optimization 4.5h, Programming & DSA 6h, DBMS 5h, Machine Learning & AI 7h, General Aptitude 4.5h).
+3. **Phase-Driven Milestone Progression:** Four preparation phases spanning Nov 2, 2026 to Jan 15, 2027, followed by a dedicated Full-Length Mock Examination period (Jan 16 – Feb 5, 2027) targeting 10–15 proctored mocks.
 4. **Linear Algebra Foundational Rebuilding:** Rigorous re-assessment and sequential coverage of Linear Algebra across 6 core modules before advanced ML applications.
-5. **Zero-Loss Mistake Vault & Spaced Repetition (SRS):** Incomplete questions are tagged by 5 root causes in the Mistake Vault, while Leitner SRS mathematically schedules topic revisions at 1, 3, 7, 14, 30, and 90-day intervals.
+5. **Zero-Loss Mistake Vault & Spaced Repetition (SRS):** Questions answered incorrectly during practice or mocks are categorized across 5 root causes in the Mistake Vault, while Leitner SRS mathematically schedules topic revisions at 1, 3, 7, 14, 30, and 90-day intervals.
 
 ---
 
 ## 2. Official GATE DA Syllabus Breakdown
 
 ```
-Total Curriculum Scope: 299 Hours | 51 Topics | 100 Marks
-├── 1. Probability & Statistics (PROB_STAT)       [16 Marks | 8 Topics  | 48 Hours]
-├── 2. Linear Algebra (LIN_ALG)                   [14 Marks | 6 Topics  | 37 Hours]
-├── 3. Calculus & Optimization (CALC_OPT)         [12 Marks | 6 Topics  | 34 Hours]
-├── 4. Programming, Data Structures (PROG_DSA)    [16 Marks | 8 Topics  | 47 Hours]
-├── 5. Database Management & Warehousing (DBMS)   [12 Marks | 7 Topics  | 39 Hours]
-├── 6. Machine Learning & AI (ML_AI)              [16 Marks | 10 Topics | 61 Hours]
-└── 7. General Aptitude (GEN_APT)                 [15 Marks | 6 Topics  | 33 Hours]
+Total Curriculum Scope: 299 Hours | 20 Chapters | 51 Topics | 100 Marks
+├── 1. Probability & Statistics (PROB_STAT)       [16 Marks | 3 Chapters | 8 Topics  | 48 Hours | 6.0 h/week]
+├── 2. Linear Algebra (LIN_ALG)                   [14 Marks | 2 Chapters | 6 Topics  | 37 Hours | 6.0 h/week]
+├── 3. Calculus & Optimization (CALC_OPT)         [12 Marks | 3 Chapters | 6 Topics  | 34 Hours | 4.5 h/week]
+├── 4. Programming, Data Structures (PROG_DSA)    [16 Marks | 3 Chapters | 8 Topics  | 47 Hours | 6.0 h/week]
+├── 5. Database Management & Warehousing (DBMS)   [12 Marks | 3 Chapters | 7 Topics  | 39 Hours | 5.0 h/week]
+├── 6. Machine Learning & AI (ML_AI)              [16 Marks | 3 Chapters | 10 Topics | 61 Hours | 7.0 h/week]
+└── 7. General Aptitude (GEN_APT)                 [15 Marks | 3 Chapters | 6 Topics  | 33 Hours | 4.5 h/week]
 ```
 
-### Subject Overview & Diagnostic Weights
+### Subject Overview & Diagnostic Baselines
 
-| Code | Subject Name | Exam Weight | Baseline Diagnostic | Chapters | Topics | Est. Hours |
-| :--- | :--- | :---: | :--- | :---: | :---: | :---: |
-| `PROB_STAT` | **Probability and Statistics** | 16% | **Weak** (Foundational priority) | 3 | 8 | 48.0 h |
-| `LIN_ALG` | **Linear Algebra** | 14% | **Intermediate** (Requires rigor & PYQs) | 2 | 6 | 37.0 h |
-| `CALC_OPT` | **Calculus and Optimization** | 12% | **Weak** (High mathematical friction) | 2 | 6 | 34.0 h |
-| `PROG_DSA` | **Programming, DSA** | 16% | **Intermediate** (Python & algorithmic speed) | 3 | 8 | 47.0 h |
-| `DBMS_DWH` | **Database Management & DWH** | 12% | **Weak** (Relational algebra & SQL focus) | 3 | 7 | 39.0 h |
-| `ML_AI` | **Machine Learning & AI** | 16% | **Intermediate** (Mathematical derivations) | 3 | 10 | 61.0 h |
-| `GEN_APT` | **General Aptitude** | 15% | **Intermediate** (Weekly speed practice) | 3 | 6 | 33.0 h |
-| **TOTAL** | **Full GATE DA Curriculum** | **100%** | **Personalized Dynamic Balance** | **19** | **51** | **299.0 h** |
+| Code | Subject Name | Exam Weight | Baseline Diagnostic | App Weekly Allocation | Chapters | Topics | Est. Total Hours |
+| :--- | :--- | :---: | :--- | :---: | :---: | :---: | :---: |
+| `PROB_STAT` | **Probability and Statistics** | 16% | **Weak** (Foundational priority) | **6.0 h / wk** | 3 | 8 | 48.0 h |
+| `LIN_ALG` | **Linear Algebra** | 14% | **Intermediate** (Requires rigor & PYQs) | **6.0 h / wk** | 2 | 6 | 37.0 h |
+| `CALC_OPT` | **Calculus and Optimization** | 12% | **Weak** (High mathematical friction) | **4.5 h / wk** | 3 | 6 | 34.0 h |
+| `PROG_DSA` | **Programming, DSA** | 16% | **Intermediate** (Python & algorithmic speed) | **6.0 h / wk** | 3 | 8 | 47.0 h |
+| `DBMS_DWH` | **Database Management & DWH** | 12% | **Weak** (Relational algebra & SQL focus) | **5.0 h / wk** | 3 | 7 | 39.0 h |
+| `ML_AI` | **Machine Learning & AI** | 16% | **Intermediate** (Mathematical derivations) | **7.0 h / wk** | 3 | 10 | 61.0 h |
+| `GEN_APT` | **General Aptitude** | 15% | **Intermediate** (Weekly speed practice) | **4.5 h / wk** | 3 | 6 | 33.0 h |
+| **TOTAL** | **Full GATE DA Curriculum** | **100%** | **Personalized Dynamic Balance** | **39.0 h / wk** | **20** | **51** | **299.0 h** |
 
 ---
 
@@ -57,7 +58,7 @@ Total Curriculum Scope: 299 Hours | 51 Topics | 100 Marks
 
 ### Subject 1: Probability and Statistics (`PROB_STAT`)
 - **Exam Weightage:** 16.0%  
-- **Diagnostic Baseline:** Weak — High-priority foundational sequence  
+- **Diagnostic Baseline:** Weak - Requires structured preparation  
 - **Estimated Study Time:** 48.0 Hours across 8 Topics  
 
 #### Chapter 1.1: Probability Theory
@@ -66,335 +67,322 @@ Total Curriculum Scope: 299 Hours | 51 Topics | 100 Marks
    - Pigeonhole Principle
    - Inclusion-Exclusion Principle
 2. **Axioms of Probability & Conditional Probability** [5.0 h | Priority: High | Difficulty: Medium]
-   - Sample Space, Events, and Kolmogorov Probability Axioms
-   - Conditional Probability and Independence of Events
-   - Law of Total Probability
-   - Bayes' Theorem, Priors, and Posterior Odds
+   - Sample Space and Probability Axioms
+   - Conditional Probability & Independence
+   - Total Probability Theorem
+   - Bayes' Theorem & Posterior Odds
 
 #### Chapter 1.2: Random Variables & Distributions
 3. **Discrete Random Variables & Distributions** [7.0 h | Priority: High | Difficulty: Medium]
-   - Probability Mass Function (PMF) and Cumulative Distribution Function (CDF)
-   - Expectation, Variance, and Higher Moments
+   - PMF and CDF of Discrete Variables
+   - Expectation, Variance and Moments
    - Bernoulli and Binomial Distributions
    - Poisson and Geometric Distributions
 4. **Continuous Random Variables & Distributions** [8.0 h | Priority: High | Difficulty: Hard]
-   - Probability Density Function (PDF), CDF, and Quartiles
-   - Continuous Expectation, Variance, and Standard Deviation
+   - PDF, CDF and Quartiles
+   - Expectation and Variance of Continuous Variables
    - Uniform Distribution
-   - Normal (Gaussian) Distribution and Standard Normal ($Z$-scores)
-   - Exponential Distribution and Memoryless Property
+   - Normal (Gaussian) Distribution & Standard Normal
+   - Exponential Distribution & Memoryless Property
 5. **Joint Probability Distributions** [7.0 h | Priority: High | Difficulty: Hard]
-   - Joint, Marginal, and Conditional PMF and PDF
-   - Independence of Multiple Random Variables
-   - Covariance and Pearson Correlation Coefficient
-   - Conditional Expectation, Conditional Variance, and Law of Total Variance
+   - Joint, Marginal and Conditional PMF/PDF
+   - Independence of Random Variables
+   - Covariance and Pearson Correlation
+   - Conditional Expectation and Variance
 
 #### Chapter 1.3: Mathematical Statistics & Inference
 6. **Limit Theorems & Inequalities** [5.0 h | Priority: High | Difficulty: Medium]
-   - Markov's Inequality and Chebyshev's Inequality
-   - Weak and Strong Law of Large Numbers (WLLN & SLLN)
-   - Central Limit Theorem (CLT) and Asymptotic Normality
+   - Markov and Chebyshev's Inequalities
+   - Weak and Strong Law of Large Numbers
+   - Central Limit Theorem (CLT)
 7. **Statistical Estimation & Inference** [6.0 h | Priority: High | Difficulty: Hard]
-   - Point Estimation, Bias, and Unbiasedness
-   - Maximum Likelihood Estimation (MLE) for Common Distributions
-   - Confidence Intervals for Population Means and Proportions
+   - Point Estimation & Unbiasedness
+   - Maximum Likelihood Estimation (MLE)
+   - Confidence Intervals for Means and Proportions
 8. **Hypothesis Testing** [6.0 h | Priority: High | Difficulty: Hard]
-   - Null and Alternative Hypotheses, Type I ($\alpha$) and Type II ($\beta$) Errors
-   - Significance Levels, Critical Regions, and $p$-Values
-   - $z$-Test and One-Sample / Two-Sample $t$-Tests
-   - Chi-Square ($\chi^2$) Goodness-of-Fit and Independence Tests
+   - Null & Alternative Hypotheses, Type I & II Errors
+   - Significance Levels and p-values
+   - z-Test and One/Two-Sample t-Test
+   - Chi-Square Goodness-of-Fit and Independence Test
 
 ---
 
 ### Subject 2: Linear Algebra (`LIN_ALG`)
 - **Exam Weightage:** 14.0%  
-- **Diagnostic Baseline:** Intermediate — Needs conceptual rigor and computational practice  
+- **Diagnostic Baseline:** Intermediate - Previously studied; requires revision & PYQs  
 - **Estimated Study Time:** 37.0 Hours across 6 Topics  
 
 #### Chapter 2.1: Vector Spaces & Linear Systems
 1. **Vector Spaces and Subspaces** [6.0 h | Priority: High | Difficulty: Medium]
-   - Vector Space Axioms and Real Euclidean Spaces ($\mathbb{R}^n$)
-   - Vector Subspaces and Span of a Set
-   - Linear Independence and Linear Dependence
-   - Basis, Dimension, and Coordinate Vectors
+   - Vector Spaces Definition and Properties
+   - Subspaces and Linear Combinations
+   - Linear Independence and Span
+   - Basis, Dimension and Coordinate Systems
 2. **Matrices & Systems of Linear Equations** [6.0 h | Priority: High | Difficulty: Medium]
-   - Elementary Row Operations and Row Echelon Form (REF / RREF)
-   - Gaussian Elimination and Gauss-Jordan Solvers
-   - Rank, Nullity, and the Fundamental Rank-Nullity Theorem
-   - Consistency Conditions ($Ax = b$) and Solution Uniqueness
+   - Elementary Row Operations & Row Echelon Form
+   - Gaussian Elimination and Gauss-Jordan
+   - Rank, Nullity and Rank-Nullity Theorem
+   - Consistency & Solutions of Linear Systems
 
 #### Chapter 2.2: Transformations, Eigenvalues & Factorizations
 3. **Linear Transformations & Matrix Representations** [5.0 h | Priority: Medium | Difficulty: Medium]
-   - Kernel (Null Space) and Range (Column Space) of Linear Transformations
-   - Matrix Representation with Respect to Arbitrary Bases
-   - Change of Basis Matrices and Similarity Transformations
+   - Kernel and Range of Linear Transformations
+   - Matrix Representations of Transformations
+   - Change of Basis and Invertible Transformations
 4. **Eigenvalues, Eigenvectors & Diagonalization** [7.0 h | Priority: High | Difficulty: Hard]
-   - Characteristic Polynomial, Eigenvalues, and Eigenvectors
-   - Algebraic Multiplicity vs. Geometric Multiplicity
-   - Matrix Diagonalization and Defective Matrices
-   - Spectral Theorem for Real Symmetric Matrices
-   - Trace, Determinant, Matrix Powers, and Cayley-Hamilton Theorem
+   - Characteristic Polynomial and Roots
+   - Algebraic and Geometric Multiplicity
+   - Diagonalization and Spectral Theorem for Symmetric Matrices
+   - Trace, Determinant and Powers of Matrices
 5. **Orthogonality & Projections** [6.0 h | Priority: High | Difficulty: Medium]
-   - Inner Products, Norms, Angles, and Orthogonality
-   - Cauchy-Schwarz and Triangle Inequalities
+   - Inner Products and Norms
+   - Cauchy-Schwarz Inequality
    - Orthogonal and Orthonormal Sets
    - Gram-Schmidt Orthogonalization Process
-   - Orthogonal Projections and Least-Squares Solutions
+   - Orthogonal Projections and Least Squares
 6. **Advanced Factorizations & SVD** [7.0 h | Priority: High | Difficulty: Hard]
-   - Singular Value Decomposition ($A = U \Sigma V^T$)
+   - Singular Value Decomposition (SVD)
    - Singular Values, Left/Right Singular Vectors
-   - Low-Rank Matrix Approximations and Connection to PCA
-   - LU Decomposition and Cholesky Factorization for Positive-Definite Matrices
+   - Low-Rank Approximations and PCA Connection
+   - LU and Cholesky Decompositions
 
 ---
 
 ### Subject 3: Calculus and Optimization (`CALC_OPT`)
 - **Exam Weightage:** 12.0%  
-- **Diagnostic Baseline:** Weak — Foundational math with steep optimization curve  
+- **Diagnostic Baseline:** Weak - Requires foundational learning and practice  
 - **Estimated Study Time:** 34.0 Hours across 6 Topics  
 
 #### Chapter 3.1: Single Variable Calculus
 1. **Limits, Continuity and Differentiability** [5.0 h | Priority: Medium | Difficulty: Medium]
-   - Limits, One-Sided Limits, and Indeterminate Forms (L'Hôpital's Rule)
-   - Continuity and Types of Discontinuities
-   - Differentiability, Chain Rule, and Implicit Differentiation
-   - Rolle's Theorem and Lagrange's Mean Value Theorem
+   - Limits and Indeterminate Forms (L'Hopital's Rule)
+   - Continuity and Discontinuity Types
+   - Differentiability and Derivative Rules
+   - Rolle's and Mean Value Theorems
 2. **Taylor Series & Local Approximations** [4.0 h | Priority: Medium | Difficulty: Medium]
-   - Taylor and Maclaurin Series Expansions
+   - Taylor and Maclaurin Series
    - Linear and Quadratic Approximations
-   - Remainder Terms, Error Bounds, and Convergence
+   - Error Bounds and Truncation
 3. **Maxima and Minima of Single Variable** [5.0 h | Priority: High | Difficulty: Medium]
-   - Critical Points and Fermat's Theorem
+   - Critical Points and Local/Global Extrema
    - First and Second Derivative Tests
-   - Concavity, Convexity, and Points of Inflection
-   - Global Extrema on Closed Bounded Intervals
+   - Concavity and Points of Inflection
 
-#### Chapter 3.2: Multivariable Calculus & Numerical Optimization
-4. **Partial Derivatives & Gradient Vectors** [6.0 h | Priority: High | Difficulty: Medium]
-   - Partial Derivatives and Higher-Order Partial Derivatives
-   - Gradient Vector ($\nabla f$) and Directional Derivatives
-   - Direction of Steepest Ascent / Descent
-   - Hessian Matrix and Multivariable Second Derivative Test
-5. **Unconstrained & Constrained Optimization** [7.0 h | Priority: High | Difficulty: Hard]
-   - Unconstrained Extrema of Multivariable Functions
-   - Positive Definiteness, Negative Definiteness, and Saddle Points
-   - Lagrange Multipliers for Equality-Constrained Optimization
-   - Karush-Kuhn-Tucker (KKT) Necessary Conditions for Inequality Constraints
-   - Convex Sets, Convex Functions, and Global Optimality
-6. **Gradient Descent & Numerical Algorithms** [7.0 h | Priority: High | Difficulty: Hard]
-   - First-Order Gradient Descent Iterations and Learning Rates
-   - Convergence Guarantees on Convex vs. Non-Convex Surfaces
-   - Stochastic Gradient Descent (SGD) and Mini-Batch SGD
-   - Momentum-Based Updates and Second-Order Newton-Raphson Method
+#### Chapter 3.2: Multivariable Calculus
+4. **Partial Derivatives, Gradients & Hessian** [6.0 h | Priority: High | Difficulty: Hard]
+   - Partial Derivatives and Multivariable Chain Rule
+   - Directional Derivatives and Gradient Vector
+   - Tangent Planes and Linear Approximations
+   - Hessian Matrix and Second Order Derivatives
+
+#### Chapter 3.3: Mathematical Optimization
+5. **Unconstrained Optimization & Gradient Descent** [7.0 h | Priority: High | Difficulty: Hard]
+   - Convex Sets and Convex Functions
+   - First and Second Order Optimality Conditions
+   - Gradient Descent and Step Size
+   - Stochastic and Batch Gradient Descent
+6. **Constrained Optimization & Lagrange Multipliers** [7.0 h | Priority: High | Difficulty: Hard]
+   - Equality Constraints and Lagrange Multipliers
+   - Inequality Constraints and KKT Conditions
+   - Primal and Dual Formulations
 
 ---
 
 ### Subject 4: Programming, Data Structures & Algorithms (`PROG_DSA`)
 - **Exam Weightage:** 16.0%  
-- **Diagnostic Baseline:** Intermediate — High scoring potential with proper practice  
+- **Diagnostic Baseline:** Intermediate  
 - **Estimated Study Time:** 47.0 Hours across 8 Topics  
 
-#### Chapter 4.1: Python Programming Foundations
-1. **Python Data Structures & OOP** [6.0 h | Priority: High | Difficulty: Medium]
-   - Python Primitives: Lists, Tuples, Sets, and Dictionaries (Hash Maps)
-   - Mutability, References, Memory Model, and Shallow vs. Deep Copy
-   - List and Dictionary Comprehensions, Generators, and Iterators
-   - Classes, Objects, Inheritance, and Method Overriding
-2. **Control Flow, Functions & Recursion** [5.0 h | Priority: Medium | Difficulty: Medium]
-   - Conditional Statements and Loops (`for`, `while`, `break`, `continue`)
-   - Function Signatures, `*args`, `**kwargs`, and Scope (LEGB Rule)
-   - Recursive Functions, Base Cases, and Recursion Trees
-   - Call Stack, Stack Overflow, and Tail Recursion Concepts
+#### Chapter 4.1: Python Programming
+1. **Python Programming Fundamentals** [6.0 h | Priority: Medium | Difficulty: Easy]
+   - Data Types, Operators and Flow Control
+   - Lists, Tuples, Dictionaries, Sets and Comprehensions
+   - Functions, Arguments, Scope and Recursion
+   - OOP Concepts: Classes, Objects, Inheritance
 
-#### Chapter 4.2: Classical Data Structures
-3. **Linear Data Structures** [6.0 h | Priority: High | Difficulty: Medium]
-   - Singly and Doubly Linked Lists (Insertion, Deletion, Reversal)
-   - Stacks: Array and Linked List Implementations
-   - Expression Evaluation: Infix, Prefix, and Postfix Conversion
-   - Queues, Circular Queues, and Double-Ended Queues (Deque)
-4. **Trees & Binary Search Trees** [7.0 h | Priority: High | Difficulty: Hard]
-   - Binary Trees: Properties, Depth, Height, and Node Counts
-   - Traversals: Inorder, Preorder, Postorder, and Level-Order
-   - Binary Search Trees (BST): Search, Insertion, and Deletion
-   - Balanced Trees Overview (AVL and Red-Black Height Balances)
-5. **Heaps, Priority Queues & Hashing** [6.0 h | Priority: High | Difficulty: Medium]
-   - Binary Min-Heaps and Max-Heaps (Array Representation)
-   - Heapify Algorithm, Insert, and Extract-Min Operations
-   - Hash Functions and Hash Tables
-   - Collision Resolution: Separate Chaining vs. Open Addressing (Linear, Quadratic, Double Hashing)
+#### Chapter 4.2: Data Structures
+2. **Linear Data Structures** [5.0 h | Priority: High | Difficulty: Medium]
+   - Arrays and Dynamic Arrays
+   - Singly and Doubly Linked Lists
+   - Stacks, Queues and Deques
+   - Stack and Queue Applications
+3. **Trees & Binary Search Trees** [7.0 h | Priority: High | Difficulty: Hard]
+   - Tree Traversals (Inorder, Preorder, Postorder, Level)
+   - Binary Search Tree (BST) Operations
+   - Balanced Trees Concept (AVL, Red-Black)
+   - Tree Height, Depth and Diameter
+4. **Heaps and Priority Queues** [4.0 h | Priority: High | Difficulty: Medium]
+   - Binary Heap Representation (Min/Max Heap)
+   - Heapify and Build Heap Operations
+   - Heap Sort Algorithm
+   - Priority Queue Implementation
+5. **Hashing and Graph Representations** [5.0 h | Priority: High | Difficulty: Medium]
+   - Hash Functions and Collision Resolution
+   - Chaining vs Open Addressing
+   - Graph Representations (Adjacency Matrix & List)
 
-#### Chapter 4.3: Algorithm Design & Analysis
-6. **Asymptotic Analysis & Recurrences** [5.0 h | Priority: High | Difficulty: Medium]
-   - Big-$O$, Big-$\Omega$, and Big-$\Theta$ Notations and Limits
-   - Time and Space Complexity Analysis of Code Snippets
-   - Recurrence Relations: Substitution and Recursion Tree Methods
-   - Master Theorem for Divide-and-Conquer Recurrences
-7. **Sorting and Searching Algorithms** [6.0 h | Priority: High | Difficulty: Medium]
-   - Comparison Sorts: Merge Sort, Quick Sort (Partitioning, Best/Worst Cases), and Heap Sort
-   - Non-Comparison Sorts: Counting Sort and Radix Sort
-   - Lower Bound for Comparison-Based Sorting ($\Omega(n \log n)$)
-   - Linear Search vs. Binary Search and Variations
-8. **Graph Algorithms** [6.0 h | Priority: High | Difficulty: Hard]
-   - Graph Representations: Adjacency Matrix and Adjacency List
-   - Breadth-First Search (BFS) and Shortest Paths in Unweighted Graphs
-   - Depth-First Search (DFS), Cycle Detection, and Topological Sorting
-   - Minimum Spanning Trees: Kruskal's and Prim's Algorithms
-   - Single-Source Shortest Paths: Dijkstra's Algorithm
+#### Chapter 4.3: Algorithms & Complexity
+6. **Asymptotic Analysis & Sorting/Searching** [5.0 h | Priority: High | Difficulty: Medium]
+   - Asymptotic Notations (Big O, Omega, Theta)
+   - Solving Recurrence Relations (Master Theorem)
+   - Linear and Binary Search
+   - Merge Sort, Quick Sort and Comparative Analysis
+7. **Algorithmic Paradigms** [8.0 h | Priority: High | Difficulty: Hard]
+   - Divide and Conquer Strategy
+   - Greedy Method and Optimal Substructure
+   - Dynamic Programming (Memoization & Tabulation)
+   - Classic DP: LCS, 0/1 Knapsack, Matrix Chain Multiplication
+8. **Graph Traversal & Shortest Paths** [7.0 h | Priority: High | Difficulty: Hard]
+   - Breadth-First Search (BFS) and Applications
+   - Depth-First Search (DFS) and Topological Sort
+   - Dijkstra's Shortest Path Algorithm
+   - Bellman-Ford Algorithm
+   - Minimum Spanning Trees (Prim's & Kruskal's)
 
 ---
 
 ### Subject 5: Database Management & Data Warehousing (`DBMS_DWH`)
 - **Exam Weightage:** 12.0%  
-- **Diagnostic Baseline:** Weak — Conceptual questions on Normal Forms and ACID  
+- **Diagnostic Baseline:** Weak - Requires structured concept preparation  
 - **Estimated Study Time:** 39.0 Hours across 7 Topics  
 
-#### Chapter 5.1: Relational Modeling & Query Languages
-1. **ER Model and Relational Model** [5.0 h | Priority: Medium | Difficulty: Medium]
-   - Entity Sets, Attributes, Relationships, and Cardinality Constraints
-   - Extended ER Features: Specialization, Generalization, and Aggregation
-   - Converting ER Diagrams to Relational Tables
-   - Keys: Super Keys, Candidate Keys, Primary Keys, and Foreign Key Integrity
-2. **Relational Algebra & Tuple Relational Calculus** [6.0 h | Priority: High | Difficulty: Hard]
-   - Fundamental Relational Algebra Operations: $\sigma$, $\pi$, $\cup$, $-$, $\times$, $\rho$
-   - Derived Operations: Joins (Natural, Equi, Theta, Outer Joins), Division ($\div$)
-   - Tuple Relational Calculus (TRC) and Domain Relational Calculus (DRC)
-   - Relational Completeness and Safe Expressions
-3. **Structured Query Language (SQL)** [6.0 h | Priority: High | Difficulty: Medium]
-   - DDL, DML, and DCL Statements
-   - Complex Multi-Table `JOIN` Queries (Inner, Left, Right, Full Outer)
-   - Aggregations: `GROUP BY`, `HAVING`, and Window Functions
-   - Subqueries: Nested, Correlated Subqueries, `EXISTS`, `IN`, and Scalar Subqueries
+#### Chapter 5.1: Database Design & Relational Models
+1. **ER Modeling & Relational Model** [5.0 h | Priority: Medium | Difficulty: Medium]
+   - Entity-Relationship (ER) Concepts
+   - ER-to-Relational Schema Mapping
+   - Integrity Constraints and Candidate/Foreign Keys
+2. **Relational Algebra & Tuple Calculus** [5.0 h | Priority: High | Difficulty: Hard]
+   - Fundamental Relational Algebra Operators
+   - Joins: Theta, Natural, Outer Joins
+   - Tuple Relational Calculus (TRC)
+   - Domain Relational Calculus (DRC)
 
-#### Chapter 5.2: Normalization & Transaction Processing
-4. **Functional Dependencies & Normal Forms** [7.0 h | Priority: High | Difficulty: Hard]
-   - Functional Dependencies (FDs) and Armstrong's Axioms
-   - Attribute Closure and Minimal Covers (Canonical Covers)
-   - Testing for Candidate Keys
-   - Normal Forms: 1NF, 2NF, 3NF, and Boyce-Codd Normal Form (BCNF)
-   - Lossless-Join Decomposition and Dependency Preservation Tests
-5. **Transactions, Concurrency Control & Recovery** [5.0 h | Priority: High | Difficulty: Hard]
-   - ACID Properties of Transactions
-   - Serializability: Conflict Serializability and Precedence Graphs
-   - View Serializability and Recoverable / Cascadeless Schedules
-   - Concurrency Control: Two-Phase Locking (2PL), Strict 2PL, and Deadlocks
-   - Log-Based Recovery and Checkpointing Principles
+#### Chapter 5.2: SQL & Normalization
+3. **Structured Query Language (SQL)** [7.0 h | Priority: High | Difficulty: Medium]
+   - DDL, DML, DCL Statements
+   - Complex Queries, Multi-table Joins
+   - Subqueries, Correlated Subqueries, Exists
+   - Aggregation, Group By, Having, Window Functions
+4. **Functional Dependencies & Normalization** [6.0 h | Priority: High | Difficulty: Hard]
+   - Functional Dependencies and Attribute Closure
+   - Minimal Cover and Candidate Key Finding
+   - 1NF, 2NF, 3NF and BCNF
+   - Lossless Join and Dependency Preserving Decompositions
 
-#### Chapter 5.3: Storage Engine & Warehousing
+#### Chapter 5.3: Transactions, Indexing & Data Warehousing
+5. **Transactions & Concurrency Control** [6.0 h | Priority: High | Difficulty: Hard]
+   - ACID Properties
+   - Conflict and View Serializability
+   - Recoverable and Cascadeless Schedules
+   - Two-Phase Locking Protocol (2PL) and Deadlocks
 6. **File Organization & B/B+ Trees Indexing** [5.0 h | Priority: High | Difficulty: Hard]
    - Primary, Secondary, and Clustering Indexes
-   - Dense vs. Sparse Indexing
-   - $B$-Trees: Node Structure, Capacity, and Search Invariants
-   - $B^+$ Trees: Internal vs. Leaf Nodes, Range Queries, Insertion, and Deletion Cost Analysis
+   - B-Trees Structure and Properties
+   - B+ Trees Insertion, Deletion and Cost Analysis
 7. **Data Warehousing & OLAP** [5.0 h | Priority: Medium | Difficulty: Medium]
-   - Data Warehouse Architecture and ETL (Extract, Transform, Load)
-   - Multidimensional Schemas: Star Schema, Snowflake Schema, and Fact Constellation
-   - OLAP Operations: Roll-up, Drill-down, Slice, Dice, and Pivot
+   - Data Warehouse Architecture and ETL Concepts
+   - Multidimensional Schemas: Star, Snowflake, Galaxy
+   - OLAP Operations: Drill-down, Roll-up, Slice, Dice, Pivot
 
 ---
 
 ### Subject 6: Machine Learning & Artificial Intelligence (`ML_AI`)
 - **Exam Weightage:** 16.0%  
-- **Diagnostic Baseline:** Intermediate — Requires exact mathematical derivations  
+- **Diagnostic Baseline:** Intermediate - Requires GATE-oriented mathematical practice  
 - **Estimated Study Time:** 61.0 Hours across 10 Topics  
 
-#### Chapter 6.1: Supervised Learning Models
+#### Chapter 6.1: Supervised Learning
 1. **Linear Regression & Regularization** [6.0 h | Priority: High | Difficulty: Hard]
-   - Simple and Multiple Linear Regression Formulations
-   - Ordinary Least Squares (OLS) Normal Equations: $\hat{\beta} = (X^T X)^{-1} X^T y$
-   - Ridge ($L_2$) Regularization and Closed-Form Solution
-   - Lasso ($L_1$) Regularization, Sparsity, and Elastic Net
-   - Bias-Variance Decomposition and Cross-Validation Schemes
+   - Simple & Multiple Linear Regression
+   - Ordinary Least Squares (OLS) Formulation
+   - Ridge (L2) and Lasso (L1) Regularization
+   - Bias-Variance Tradeoff and Cross-Validation
 2. **Classification & Tree Models** [8.0 h | Priority: High | Difficulty: Hard]
-   - Logistic Regression, Sigmoid Function, and Log-Odds (Logit)
-   - Cross-Entropy Loss and Gradient Updates
-   - Decision Trees: Entropy, Information Gain, and Gini Impurity
-   - Overfitting, Tree Pruning, and Maximum Depth
-   - Ensemble Methods: Bagging, Random Forests, and Gradient Boosted Trees
-3. **$k$-Nearest Neighbors & Naive Bayes** [5.0 h | Priority: Medium | Difficulty: Medium]
-   - $k$-NN Classification and Regression, Distance Metrics ($L_1$, $L_2$, Minkowski)
-   - Effect of $k$, Curse of Dimensionality, and Voronoi Tessellations
-   - Bayes Decision Rule and Maximum A Posteriori (MAP) Decision
-   - Gaussian Naive Bayes and Multinomial Naive Bayes (Conditional Independence Assumption)
+   - Logistic Regression & Decision Boundaries
+   - Decision Trees: Entropy, Information Gain, Gini
+   - Overfitting and Tree Pruning
+   - Random Forests, Bagging and Gradient Boosting
+3. **k-Nearest Neighbors & Naive Bayes** [5.0 h | Priority: Medium | Difficulty: Medium]
+   - k-NN Distance Metrics and Choice of k
+   - Bayes Decision Rule and Maximum a Posteriori (MAP)
+   - Naive Bayes Classifier (Gaussian & Multinomial)
 4. **Support Vector Machines (SVM)** [6.0 h | Priority: High | Difficulty: Hard]
-   - Linearly Separable Classification and Hyperplane Geometry
-   - Margin Formulation: Maximal Margin Classifier
-   - Soft-Margin SVM, Slack Variables ($\xi_i$), and Regularization Parameter $C$
-   - Dual Formulation and Support Vectors
-   - Kernel Trick: Polynomial Kernels and Radial Basis Function (RBF / Gaussian) Kernels
+   - Maximal Margin Hyperplane and Support Vectors
+   - Soft-Margin Formulation and Slack Variables
+   - Kernel Trick (Polynomial, RBF Kernels)
 
 #### Chapter 6.2: Unsupervised Learning & Deep Learning
 5. **Clustering Algorithms** [6.0 h | Priority: Medium | Difficulty: Medium]
-   - $k$-Means and $k$-Means++ Initialization Algorithms
-   - Objective Function (Within-Cluster Sum of Squares) and Elbow Method
-   - Silhouette Score Analysis
-   - Hierarchical Clustering: Agglomerative, Linkage Criteria (Single, Complete, Average), and Dendrograms
-   - Density-Based Spatial Clustering of Applications with Noise (DBSCAN)
+   - k-Means and k-Means++ Clustering
+   - Objective Function and Elbow Method
+   - Hierarchical Clustering (Agglomerative, Dendrograms)
+   - DBSCAN Density-Based Clustering
 6. **Dimensionality Reduction & PCA** [5.0 h | Priority: High | Difficulty: Hard]
-   - High-Dimensional Geometry and Curse of Dimensionality
-   - Principal Component Analysis (PCA) Mathematical Formulation
-   - Sample Covariance Matrix, Eigenvalue Decomposition, and Orthogonal Projection
-   - Proportion of Explained Variance and Reconstruction Error
+   - Curse of Dimensionality
+   - Principal Component Analysis (PCA) Derivation
+   - Covariance Matrix and Eigenvector Projection
+   - Explained Variance and Reconstruction Error
 7. **Multilayer Perceptron & Neural Networks** [7.0 h | Priority: High | Difficulty: Hard]
-   - Artificial Neurons, Perceptron Learning Algorithm, and Linear Inseparability (XOR)
-   - Multilayer Perceptron (MLP) Architecture and Universal Approximation Theorem
-   - Activation Functions: Sigmoid, Hyperbolic Tangent ($\tanh$), ReLU, Leaky ReLU, Softmax
-   - Loss Functions: Mean Squared Error (MSE), Binary Cross-Entropy, Categorical Cross-Entropy
+   - Perceptron and Linear Separability
+   - Multilayer Perceptron (MLP) Architecture
+   - Activation Functions (Sigmoid, Tanh, ReLU, Softmax)
+   - Loss Functions (MSE, Cross-Entropy)
 8. **Backpropagation & Deep Learning Optimization** [7.0 h | Priority: High | Difficulty: Hard]
-   - Backpropagation Algorithm: Vectorized Chain Rule and Error Gradient Propagation
-   - Optimization Algorithms: Stochastic Gradient Descent (SGD), Momentum, RMSprop, Adam
-   - Regularization Techniques: Dropout, $L_1$/$L_2$ Weight Decay, and Batch Normalization
-   - Vanishing and Exploding Gradient Phenomena and Initialization (He, Xavier/Glorot)
+   - Backpropagation Derivation and Gradient Flow
+   - Optimizers: SGD, Momentum, RMSprop, Adam
+   - Regularization: Dropout, L1/L2, Batch Normalization
+   - Vanishing and Exploding Gradients
 
 #### Chapter 6.3: Artificial Intelligence & Search
 9. **Search Algorithms & Heuristics** [6.0 h | Priority: High | Difficulty: Medium]
-   - Problem Formulation: State Space, Actions, Transition Model, Goal Test, Path Cost
-   - Uninformed Search: Breadth-First Search (BFS), Depth-First Search (DFS), Uniform-Cost Search (UCS)
-   - Informed (Heuristic) Search: Greedy Best-First Search and $A^*$ Search
-   - Heuristic Properties: Admissibility and Consistency (Monotonicity) for $A^*$ Optimality
+   - State Space, States, Actions, Path Cost
+   - Uninformed Search: BFS, DFS, Uniform Cost Search
+   - Informed Search: A* Search, Heuristic Admissibility
+   - Consistency and Optimality of A*
 10. **Adversarial Search & Game Playing** [5.0 h | Priority: Medium | Difficulty: Hard]
-    - Zero-Sum Two-Player Complete Information Games
-    - Game Trees and Optimal Decisions
-    - Minimax Algorithm Formulation and Value Computation
-    - Alpha-Beta ($\alpha$-$\beta$) Pruning: Pruning Conditions and Complexity Reductions
+   - Game Trees and Optimal Decisions
+   - Minimax Algorithm Formulation
+   - Alpha-Beta Pruning Technique and Efficiency
 
 ---
 
 ### Subject 7: General Aptitude (`GEN_APT`)
-- **Exam Weightage:** 15.0% (Mandatory for all GATE papers)  
-- **Diagnostic Baseline:** Intermediate — High accuracy guaranteed through weekly timed sets  
+- **Exam Weightage:** 15.0%  
+- **Diagnostic Baseline:** Intermediate - Requires consistent weekly practice  
 - **Estimated Study Time:** 33.0 Hours across 6 Topics  
 
 #### Chapter 7.1: Verbal Aptitude
 1. **English Grammar & Vocabulary** [5.0 h | Priority: Medium | Difficulty: Easy]
-   - English Grammar: Tenses, Prepositions, Conjunctions, and Articles
-   - Subject-Verb Agreement and Modifiers
-   - Vocabulary, Contextual Synonyms, Antonyms, and Phrasal Verbs
+   - Tenses, Prepositions, Conjunctions
+   - Subject-Verb Agreement and Articles
+   - Vocabulary, Idioms and Phrasal Verbs
 2. **Reading Comprehension & Critical Reasoning** [6.0 h | Priority: High | Difficulty: Medium]
-   - Reading Comprehension: Main Idea, Tone, and Contextual Deductions
-   - Critical Reasoning: Assumptions, Strengths, and Weaknesses of Arguments
-   - Logical Deductions, Syllogisms, and Sentence Ordering
+   - Passage Analysis and Central Idea
+   - Inference and Logical Deductions
+   - Sentence Completion and Ordering
 
 #### Chapter 7.2: Quantitative Aptitude
 3. **Numerical Computation & Word Problems** [7.0 h | Priority: High | Difficulty: Medium]
-   - Numbers, Percentages, Ratios, and Proportions
-   - Profit, Loss, Discount, Simple and Compound Interest
-   - Time and Work, Pipes and Cisterns
-   - Time, Speed, and Distance; Relative Speed
-   - Elementary Permutations, Combinations, and Probability
+   - Percentages, Ratios and Proportions
+   - Profit and Loss, Simple and Compound Interest
+   - Time, Speed and Distance; Time and Work
+   - Permutations, Combinations and Elementary Probability
 4. **Data Interpretation & Statistics** [6.0 h | Priority: High | Difficulty: Medium]
-   - Data Interpretation from Tables, Bar Charts, Pie Charts, and Line Graphs
-   - Summary Descriptive Statistics: Mean, Median, Mode, and Range
-   - Inter-Quartile Range and Trend Extrapolation
+   - Tables and Column Charts
+   - Bar Charts, Pie Charts and Line Graphs
+   - Summary Statistics: Mean, Median, Mode
 
 #### Chapter 7.3: Analytical & Spatial Aptitude
 5. **Analytical & Logical Reasoning** [5.0 h | Priority: High | Difficulty: Medium]
-   - Linear and Circular Seating Arrangements
-   - Blood Relations, Direction Sense, and Coding-Decoding
-   - Number and Letter Series Completion, Odd-One-Out
+   - Syllogisms and Deductive Logic
+   - Seating Arrangement and Blood Relations
+   - Number and Pattern Series
 6. **Spatial Aptitude** [4.0 h | Priority: Medium | Difficulty: Medium]
-   - 2D and 3D Shape Transformations and Mirror Reflections
-   - Paper Folding, Paper Cutting, and Punched Holes
-   - Rotation, Grouping of Identical Figures, and Spatial Tessellations
+   - Transformation of 2D and 3D Shapes
+   - Paper Folding, Cutting and Assembly
+   - Patterns, Mirror Images and Rotations
+
+---
 
 ---
 
@@ -557,11 +545,26 @@ Whenever a mock test is submitted or practice errors occur, incorrect questions 
 
 ---
 
-## 9. Data Ownership & Access Instructions
+## 9. Application Feature Mapping & Execution Workflows
+
+| App Page / Feature | Key Capabilities & Algorithmic Logic |
+| :--- | :--- |
+| **Dashboard** (`/`) | • Real-time countdown to Feb 6, 2027 (09:30 AM IST) and Jan 15, 2027 syllabus deadline.<br>• Phase progress pill (Phase 1 through Final Mock Phase) & next milestone.<br>• Deficit Warning Banner if required study hours exceed available daily/weekly capacity.<br>• 39h Weekly actual vs target study hours bar (Mon–Sun).<br>• Academic Readiness Scorecard (Weighted completion %, Mastered topics, Pending PYQs, Overdue SRS, Unresolved mistakes, Latest mock score). |
+| **Daily Planner** (`/planner`) | • Calendar day picker, today jump, and week view.<br>• 6.0h daily capacity target (Mon–Sat), 3.0h (Sun).<br>• 8 supported session types with color-coded badges.<br>• Morning Check-in Modal (07:30 IST) & Evening Review Modal (21:30 IST).<br>• One-click **Smart Reflow** button to redistribute pending backlog forward. |
+| **Syllabus Tracker** (`/syllabus`) | • 7 subjects, 20 chapters, 51 topics with status filtering (`Not Started`, `In Progress`, `Mastered`).<br>• Subtopic checklists with progress recalculation.<br>• PYQ counter (target 20 per topic).<br>• Confidence rating buttons (Weak, Average, Good, Strong) linked to Leitner SRS revision calculation. |
+| **Focus Timer** (Global Bar & Modal) | • Floating bottom widget with full-screen focus modal.<br>• Pomodoro (25/5 min), Deep Work (50/10 min), and Stopwatch modes.<br>• Session type inherited from active task.<br>• Question practice counter with automatic topic actual hours sync. |
+| **Mistake Vault** (`/mistakes`) | • Error logging with 5 root causes, difficulty, and question source.<br>• LaTeX math formula support in problem statements and solution notes.<br>• Re-solve verification to mark errors as Resolved. |
+| **Mock Exam Centre** (`/mocks`) | • Official GATE DA scoring calculator (+1, +2 MCQ with negative marking, MSQ/NAT with 0 negative).<br>• Track score progression towards 80+ marks target.<br>• 3-hour post-mock analysis logging directly to the Mistake Vault. |
+| **Formula & Study Journal** (`/journal`) | • Formula flashcard repository with LaTeX / KaTeX rendering.<br>• Derivation step-by-step logs.<br>• Daily reflection and concept note entries. |
+| **Analytics & Diagnostics** (`/analytics`) | • 7-subject radar and bar breakdowns (Actual vs Estimated hours, PYQ completion rate).<br>• Leitner SRS retention curves.<br>• Error taxonomy distribution donut chart. |
+| **Settings & Backups** (`/settings`) | • Target exam date, prep start date, syllabus deadline pickers.<br>• Configurable subject weekly hours editor with live 39.0h sum validator.<br>• Diagnostic baselines editor for all 7 subjects.<br>• Non-destructive JSON Backup Export & Restore. |
+
+---
+
+## 10. Data Ownership & Access Instructions
 
 Your preparation progress is 100% yours and accessible both online and offline:
 
 - **Online Live Web App:** [https://sankeerth28.github.io/GATE-Command-Centre/](https://sankeerth28.github.io/GATE-Command-Centre/)
 - **Local Application:** Run `npm --prefix frontend run dev` and `uvicorn app.main:app` to use your local SQLite database (`gate_command_centre.db`).
-- **Data Backup:** At any time, navigate to **Settings & Data Management** $\rightarrow$ click **Export JSON Backup** to save a complete, portable 13-table snapshot of your preparation journey.
-
+- **Data Backup:** At any time, navigate to **Settings & Data Management** $\rightarrow$ click **Export JSON Backup** to save a complete, portable snapshot of your preparation journey.
