@@ -259,3 +259,4 @@ npm run lint
 ## 🛡️ License
 
 This project is licensed under the MIT License — free to use and customize for your academic preparation.
+
