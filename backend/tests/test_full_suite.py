@@ -313,6 +313,54 @@ def test_analytics_endpoints():
     assert "mock_history" in comp
     assert len(comp["subject_analytics"]) == 7
 
+def test_personalized_39h_study_plan_and_phases():
+    # Set default 6.0 daily / 39.0 weekly
+    client.put("/api/settings/", json={"daily_target_hours": 6.0, "weekly_target_hours": 39.0})
+
+    # 1. Generate study plan starting Nov 2, 2026 until Jan 15, 2027
+    plan_res = client.post("/api/planner/generate-plan", json={
+        "start_date": "2026-11-02",
+        "target_date": "2027-01-15"
+    })
+    assert plan_res.status_code == 200
+    plan_data = plan_res.json()
+    assert plan_data["status"] == "success"
+    assert plan_data["created_count"] > 0
+    assert plan_data["mock_tests_scheduled"] >= 5
+
+    # 2. Verify settings has 39h weekly target and 6h daily target
+    settings_res = client.get("/api/settings/")
+    assert settings_res.status_code == 200
+    s_data = settings_res.json()
+    assert s_data["weekly_target_hours"] == 39.0
+    assert s_data["daily_target_hours"] == 6.0
+    assert s_data["prep_start_date"] == "2026-11-02"
+    assert s_data["syllabus_target_date"] == "2027-01-15"
+
+    # 3. Verify Dashboard KPIs include Phase info and Deadline Intelligence
+    kpi_res = client.get("/api/analytics/dashboard")
+    assert kpi_res.status_code == 200
+    kpis = kpi_res.json()
+    countdown = kpis["countdown"]
+    assert "days_to_syllabus_deadline" in countdown
+    assert "current_phase" in countdown
+    assert countdown["current_phase"] is not None
+    assert "Phase" in countdown["current_phase"]["name"]
+    assert "next_milestone" in countdown
+
+    readiness = kpis["kpis"]
+    assert readiness["weekly_target_hours"] == 39.0
+    assert "pending_pyqs_count" in readiness
+    assert "required_weekly_runrate_hours" in readiness
+
+    # 4. Verify reflow backlog respects capacity and returns feasibility
+    reflow_res = client.post("/api/planner/reflow-backlog", json={
+        "target_start_date": "2026-11-03"
+    })
+    assert reflow_res.status_code == 200
+    reflow_data = reflow_res.json()
+    assert "is_feasible" in reflow_data
+
 def test_data_export_and_backup():
     # Export
     exp_res = client.get("/api/data/export")

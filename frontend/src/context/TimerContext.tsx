@@ -9,6 +9,7 @@ interface ActiveTaskInfo {
   topicId?: number;
   subjectId?: number;
   title: string;
+  sessionType?: string;
   subjectName?: string;
   subjectColor?: string;
 }
@@ -171,7 +172,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       work_item_id: activeTask?.workItemId || null,
       topic_id: activeTask?.topicId || null,
       subject_id: activeTask?.subjectId || null,
-      session_type: 'Concept Learning',
+      session_type: activeTask?.sessionType || 'Concept Learning',
       start_timestamp: startTimestampIso || new Date().toISOString(),
       end_timestamp: new Date().toISOString(),
       duration_seconds: finalSeconds,

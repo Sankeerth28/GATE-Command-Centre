@@ -14,6 +14,10 @@ import {
   ListTodo,
   ChevronRight,
   Zap,
+  Target,
+  Clock,
+  ShieldAlert,
+  GraduationCap,
 } from 'lucide-react';
 
 interface Props {
@@ -64,6 +68,7 @@ export const DashboardPage: React.FC<Props> = ({
       topicId: item.topic_id || undefined,
       subjectId: item.subject_id || undefined,
       title: item.title,
+      sessionType: item.session_type,
       subjectName: item.subject_name || undefined,
       subjectColor: item.subject_color || undefined,
     });
@@ -103,10 +108,22 @@ export const DashboardPage: React.FC<Props> = ({
   }
 
   const kpis = data?.kpis;
+  const countdown = data?.countdown;
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      {/* 8.4 Unfinished Work Banner (if backlog exists) */}
+      {/* Pace Alert / Deficit Warning */}
+      {kpis?.deficit_warning && (
+        <div className="p-4 rounded-xl bg-error/15 border border-error/40 flex items-start gap-3 animate-in fade-in">
+          <ShieldAlert className="w-5 h-5 text-error flex-shrink-0 mt-0.5" />
+          <div className="space-y-1 text-xs">
+            <span className="font-semibold text-white block">Pace & Feasibility Alert</span>
+            <p className="text-error-light leading-relaxed">{kpis.deficit_warning}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Unfinished Work Banner */}
       {todayQueue && todayQueue.overdue_count > 0 && (
         <div className="p-4 rounded-xl bg-warning/10 border border-warning/30 flex flex-wrap items-center justify-between gap-4 animate-in fade-in">
           <div className="flex items-center gap-3">
@@ -147,17 +164,35 @@ export const DashboardPage: React.FC<Props> = ({
         <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary-light text-xs font-mono">
-              <Zap className="w-3.5 h-3.5" />
-              <span>Target: 6 Feb 2027 • 09:30 AM IST</span>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary-light text-xs font-mono">
+                <Zap className="w-3.5 h-3.5" />
+                <span>GATE 2027 DA • Feb 6, 2027</span>
+              </span>
+              {countdown?.current_phase && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/20 border border-secondary/30 text-secondary-light text-xs font-medium">
+                  <Target className="w-3 h-3" />
+                  <span>{countdown.current_phase.name}</span>
+                </span>
+              )}
             </div>
+
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               GATE 2027 DA Command Centre
             </h1>
-            <p className="text-xs sm:text-sm text-muted-light max-w-xl">
-              Intelligent academic execution system. Manage day-wise syllabus milestones, persistent focus timer, spaced repetition and GATE negative-marking mock analytics.
-            </p>
+
+            <div className="flex items-center gap-4 text-xs text-muted-light flex-wrap">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-primary" />
+                <span>Syllabus Target: <strong className="text-white">{countdown?.syllabus_target_date || '2027-01-15'}</strong> ({countdown?.days_to_syllabus_deadline ?? 75} days left)</span>
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-secondary" />
+                <span>Weekly Plan: <strong className="text-white">39 Focused Hours</strong> (Mon-Sat: 6h, Sun: 3h)</span>
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -178,7 +213,7 @@ export const DashboardPage: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 8.2 Preparation KPIs (Strictly Real Records - Zero Fake Data) */}
+      {/* Preparation KPIs (Strictly Real Records - Zero Fake Data) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {/* KPI 1: Weighted Completion */}
         <div className="glass-panel p-4 rounded-xl space-y-1">
@@ -220,19 +255,24 @@ export const DashboardPage: React.FC<Props> = ({
           <div className="text-2xl font-bold font-mono text-warning">
             {kpis?.needs_revision_topics || 0}
           </div>
-          <p className="text-[10px] text-muted-light">SRS confidence queue</p>
+          <p className="text-[10px] text-muted-light">
+            {kpis?.overdue_srs_count ? `${kpis.overdue_srs_count} overdue SRS` : 'SRS confidence queue'}
+          </p>
         </div>
 
-        {/* KPI 4: Actual Study Hours */}
+        {/* KPI 4: Weekly Hours: Actual vs Target */}
         <div className="glass-panel p-4 rounded-xl space-y-1">
           <div className="text-[11px] font-medium text-muted uppercase tracking-wider">
-            Actual Study Hours
+            Weekly Hours
           </div>
           <div className="text-2xl font-bold font-mono text-secondary">
-            {kpis?.total_actual_study_hours || 0}h
+            {kpis?.weekly_actual_hours || 0}h
+            <span className="text-xs text-muted font-sans font-normal ml-1">
+              / {kpis?.weekly_target_hours || 39}h
+            </span>
           </div>
           <p className="text-[10px] text-muted-light">
-            Target: {kpis?.target_daily_hours || 4}h/day
+            {kpis?.total_actual_study_hours || 0}h total logged
           </p>
         </div>
 
@@ -264,7 +304,7 @@ export const DashboardPage: React.FC<Props> = ({
 
       {/* Main Grid: Today's Execution Queue & Actionable Preparation Intel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: 8.3 Today's Execution Queue */}
+        {/* Left 2 Cols: Today's Execution Queue */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -385,7 +425,7 @@ export const DashboardPage: React.FC<Props> = ({
                   No activities scheduled for today
                 </h3>
                 <p className="text-xs text-muted max-w-sm mx-auto">
-                  Generate your automatic day-wise study plan or add a custom focus block to kickstart preparation.
+                  Generate your 39h weekly plan from the Planner page to populate your calendar through January 15.
                 </p>
               </div>
               <button
@@ -399,7 +439,7 @@ export const DashboardPage: React.FC<Props> = ({
           )}
         </div>
 
-        {/* Right Col: Preparation Intelligence & Next Revisions */}
+        {/* Right Col: Preparation Intelligence & Academic Readiness */}
         <div className="space-y-6">
           {/* Actionable Intelligence Observations */}
           <div className="glass-panel p-5 rounded-xl space-y-3">
@@ -426,6 +466,44 @@ export const DashboardPage: React.FC<Props> = ({
             )}
           </div>
 
+          {/* Academic Readiness Card */}
+          <div className="glass-panel p-5 rounded-xl space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-4 h-4 text-primary" />
+                <h3 className="font-semibold text-sm text-white">Academic Readiness</h3>
+              </div>
+              <span className="text-[10px] font-mono text-muted">GATE DA 2027</span>
+            </div>
+
+            <div className="space-y-2.5 text-xs">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface-card border border-border">
+                <span className="text-muted">Pending Target PYQs</span>
+                <span className="font-bold text-white font-mono">{kpis?.pending_pyqs_count ?? 1020}</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface-card border border-border">
+                <span className="text-muted">Unresolved Mistakes</span>
+                <span className={`font-bold font-mono ${(kpis?.unresolved_mistakes_count || 0) > 0 ? 'text-error' : 'text-success'}`}>
+                  {kpis?.unresolved_mistakes_count ?? 0}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface-card border border-border">
+                <span className="text-muted">Overdue SRS Revisions</span>
+                <span className={`font-bold font-mono ${(kpis?.overdue_srs_count || 0) > 0 ? 'text-warning' : 'text-success'}`}>
+                  {kpis?.overdue_srs_count ?? 0}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface-card border border-border">
+                <span className="text-muted">Latest Mock Score</span>
+                <span className="font-bold text-secondary font-mono">
+                  {kpis?.latest_mock_score !== null && kpis?.latest_mock_score !== undefined
+                    ? `${kpis.latest_mock_score} / 100`
+                    : 'Not Attempted'}
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Quick Syllabus Navigation Card */}
           <div className="glass-panel p-5 rounded-xl space-y-3">
             <div className="flex items-center justify-between">
@@ -447,19 +525,19 @@ export const DashboardPage: React.FC<Props> = ({
             <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
               <div className="p-2.5 rounded-lg bg-surface-card border border-border">
                 <span className="text-muted block text-[10px]">Prob & Statistics</span>
-                <span className="font-semibold text-white">16 Marks</span>
+                <span className="font-semibold text-white">16 Marks (6h/wk)</span>
               </div>
               <div className="p-2.5 rounded-lg bg-surface-card border border-border">
                 <span className="text-muted block text-[10px]">Machine Learning</span>
-                <span className="font-semibold text-white">16 Marks</span>
+                <span className="font-semibold text-white">16 Marks (7h/wk)</span>
               </div>
               <div className="p-2.5 rounded-lg bg-surface-card border border-border">
                 <span className="text-muted block text-[10px]">Linear Algebra</span>
-                <span className="font-semibold text-white">14 Marks</span>
+                <span className="font-semibold text-white">14 Marks (6h/wk)</span>
               </div>
               <div className="p-2.5 rounded-lg bg-surface-card border border-border">
                 <span className="text-muted block text-[10px]">Programming & DSA</span>
-                <span className="font-semibold text-white">16 Marks</span>
+                <span className="font-semibold text-white">16 Marks (6h/wk)</span>
               </div>
             </div>
           </div>

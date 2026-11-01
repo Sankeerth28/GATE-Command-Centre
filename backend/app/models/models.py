@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import datetime, timezone
 from typing import Optional, List
@@ -5,6 +6,133 @@ from sqlmodel import SQLModel, Field, Relationship
 
 def now_utc_str() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+DEFAULT_SUBJECT_ALLOCATIONS_JSON = json.dumps({
+    "PROB_STAT": 6.0,
+    "LIN_ALG": 6.0,
+    "CALC_OPT": 4.5,
+    "PROG_DSA": 6.0,
+    "DBMS_DWH": 5.0,
+    "ML_AI": 7.0,
+    "GEN_APT": 4.5
+})
+
+DEFAULT_WEEKLY_SCHEDULE_JSON = json.dumps({
+    "Monday": [
+        {"subject_code": "PROB_STAT", "hours": 2.0},
+        {"subject_code": "LIN_ALG", "hours": 2.0},
+        {"subject_code": "PROG_DSA", "hours": 2.0}
+    ],
+    "Tuesday": [
+        {"subject_code": "PROB_STAT", "hours": 2.0},
+        {"subject_code": "CALC_OPT", "hours": 2.0},
+        {"subject_code": "DBMS_DWH", "hours": 2.0}
+    ],
+    "Wednesday": [
+        {"subject_code": "LIN_ALG", "hours": 2.0},
+        {"subject_code": "ML_AI", "hours": 2.0},
+        {"subject_code": "GEN_APT", "hours": 1.0},
+        {"subject_code": "DBMS_DWH", "hours": 1.0}
+    ],
+    "Thursday": [
+        {"subject_code": "CALC_OPT", "hours": 2.0},
+        {"subject_code": "PROG_DSA", "hours": 2.0},
+        {"subject_code": "ML_AI", "hours": 2.0}
+    ],
+    "Friday": [
+        {"subject_code": "PROB_STAT", "hours": 2.0},
+        {"subject_code": "DBMS_DWH", "hours": 2.0},
+        {"subject_code": "LIN_ALG", "hours": 1.0},
+        {"subject_code": "GEN_APT", "hours": 1.0}
+    ],
+    "Saturday": [
+        {"subject_code": "ML_AI", "hours": 2.0},
+        {"subject_code": "PROG_DSA", "hours": 2.0},
+        {"subject_code": "CALC_OPT", "hours": 0.5},
+        {"subject_code": "GEN_APT", "hours": 1.5}
+    ],
+    "Sunday": [
+        {"subject_code": "LIN_ALG", "hours": 1.0},
+        {"subject_code": "ML_AI", "hours": 1.0},
+        {"subject_code": "GEN_APT", "hours": 1.0}
+    ]
+})
+
+DEFAULT_PHASES_JSON = json.dumps([
+    {
+        "id": 1,
+        "name": "Phase 1: Foundation Rebuilding",
+        "start_date": "2026-11-02",
+        "end_date": "2026-11-15",
+        "objectives": [
+            "Rebuild Linear Algebra from fundamentals (Vector Spaces, Matrices, Elementary Row Ops)",
+            "Begin Probability and Statistics (Counting, Axioms, Conditional Prob)",
+            "Begin Calculus and Optimization (Limits, Continuity, Differentiation)",
+            "Continue Programming and DSA (Python OOP, Lists, Stacks, Queues)",
+            "Maintain regular DBMS and ML exposure"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Phase 2: Core Subject Coverage",
+        "start_date": "2026-11-16",
+        "end_date": "2026-12-13",
+        "objectives": [
+            "Complete most Linear Algebra topics (Transformations, Eigenvalues, Orthogonality, SVD)",
+            "Progress through Probability distributions and statistical inference",
+            "Cover multivariable Calculus and Optimization (Gradients, Hessian, Constraints)",
+            "Cover DSA trees, heaps, graphs and algorithms",
+            "Cover relational algebra, SQL, normalization and transactions",
+            "Cover supervised Machine Learning and SVM",
+            "Maintain PYQ practice alongside concept learning"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Phase 3: Remaining Syllabus Completion",
+        "start_date": "2026-12-14",
+        "end_date": "2026-12-27",
+        "objectives": [
+            "Deep Learning and Neural Networks (MLP, Backprop, Optimizers)",
+            "Dimensionality Reduction (PCA) and Clustering (k-Means, DBSCAN)",
+            "AI Search Algorithms (A*, Heuristics) and Adversarial Search (Minimax, Alpha-Beta)",
+            "Remaining DBMS, Probability, and Calculus topics",
+            "Remaining DSA topics (Sorting, Graphs)",
+            "Topic-wise PYQs and sectional tests",
+            "Target: Complete first learning pass of all 51 topics by December 27"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Phase 4: Consolidation and Backlog Closure",
+        "start_date": "2026-12-28",
+        "end_date": "2027-01-15",
+        "objectives": [
+            "Finish incomplete topics and backlog closure",
+            "Complete pending PYQs across all subjects",
+            "Revise mathematical derivations and proofs",
+            "Resolve all open Mistake Vault entries",
+            "Conduct timed sectional tests",
+            "Consolidate formula sheets and study journals",
+            "January 15: Hard syllabus closure deadline"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Final Examination Preparation",
+        "start_date": "2027-01-16",
+        "end_date": "2027-02-05",
+        "objectives": [
+            "Full-length GATE DA mock examinations (Min: 10, Stretch: 15)",
+            "Detailed 3-hour mock analysis after every test",
+            "Systematic revision of all 7 subjects",
+            "Formula and derivation speed-recall",
+            "Weak-topic remediation without new syllabus learning",
+            "Time management, question selection & negative mark minimization",
+            "February 6, 2027: GATE DA Examination"
+        ]
+    }
+])
 
 # 1. User Settings
 class UserSettings(SQLModel, table=True):
@@ -14,10 +142,12 @@ class UserSettings(SQLModel, table=True):
     exam_name: str = Field(default="GATE 2027 — Data Science and Artificial Intelligence (DA)")
     exam_date: str = Field(default="2027-02-06T09:30:00+05:30")
     timezone: str = Field(default="Asia/Kolkata")
-    daily_target_hours: float = Field(default=4.0)
-    weekly_target_hours: float = Field(default=28.0)
+    prep_start_date: str = Field(default="2026-11-02")
+    daily_target_hours: float = Field(default=6.0)
+    weekly_target_hours: float = Field(default=39.0)
     max_daily_capacity_hours: float = Field(default=8.0)
     syllabus_target_date: str = Field(default="2027-01-15")
+    mock_target_count: int = Field(default=10)
     pomodoro_focus_minutes: int = Field(default=25)
     pomodoro_short_break: int = Field(default=5)
     pomodoro_long_break: int = Field(default=15)
@@ -27,6 +157,9 @@ class UserSettings(SQLModel, table=True):
     evening_review_time: str = Field(default="21:30")
     baseline_confirmed: bool = Field(default=False)
     baselines_json: str = Field(default="{}")
+    subject_allocations_json: str = Field(default=DEFAULT_SUBJECT_ALLOCATIONS_JSON)
+    weekly_schedule_json: str = Field(default=DEFAULT_WEEKLY_SCHEDULE_JSON)
+    phases_json: str = Field(default=DEFAULT_PHASES_JSON)
     created_at_utc: str = Field(default_factory=now_utc_str)
     updated_at_utc: str = Field(default_factory=now_utc_str)
 

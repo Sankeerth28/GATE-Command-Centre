@@ -30,6 +30,7 @@ export const PlannerPage: React.FC = () => {
   const [newTaskSessionType, setNewTaskSessionType] = useState('Concept Learning');
   const [newTaskSubjectId, setNewTaskSubjectId] = useState<number | undefined>();
   const [newTaskDuration, setNewTaskDuration] = useState(60);
+  const [reflowMessage, setReflowMessage] = useState<string | null>(null);
 
   const loadData = async () => {
     try {
@@ -54,7 +55,9 @@ export const PlannerPage: React.FC = () => {
   const handleGeneratePlan = async () => {
     try {
       setGenerating(true);
-      await api.generatePlan();
+      const res = await api.generatePlan('2026-11-02', '2027-01-15');
+      setReflowMessage(res.message);
+      setTimeout(() => setReflowMessage(null), 5000);
       await loadData();
     } catch (e) {
       console.error('Failed to generate plan', e);
@@ -66,7 +69,13 @@ export const PlannerPage: React.FC = () => {
   const handleReflowBacklog = async () => {
     try {
       setReflowing(true);
-      await api.reflowBacklog();
+      const res = await api.reflowBacklog();
+      if ((res as any).deficit_warning) {
+        setReflowMessage((res as any).deficit_warning);
+      } else {
+        setReflowMessage(res.message);
+      }
+      setTimeout(() => setReflowMessage(null), 7000);
       await loadData();
     } catch (e) {
       console.error('Failed to reflow backlog', e);
@@ -102,6 +111,7 @@ export const PlannerPage: React.FC = () => {
       topicId: item.topic_id || undefined,
       subjectId: item.subject_id || undefined,
       title: item.title,
+      sessionType: item.session_type,
       subjectName: item.subject_name || undefined,
       subjectColor: item.subject_color || undefined,
     });
@@ -182,6 +192,36 @@ export const PlannerPage: React.FC = () => {
             <Plus className="w-3.5 h-3.5" />
             <span>Add Task</span>
           </button>
+        </div>
+      </div>
+
+      {/* Notification / Reflow Alert */}
+      {reflowMessage && (
+        <div className="p-3.5 rounded-xl bg-primary/15 border border-primary/40 text-primary-light text-xs flex items-center gap-2 animate-in fade-in">
+          <Sparkles className="w-4 h-4 text-primary flex-shrink-0" />
+          <span>{reflowMessage}</span>
+        </div>
+      )}
+
+      {/* 39h Strategy & Subject Allocation Strip */}
+      <div className="glass-panel p-4 rounded-xl space-y-2">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-white uppercase tracking-wider">Weekly 39h Allocation:</span>
+            <span className="text-[11px] text-muted-light">(Mon–Sat: 6h/day • Sun: 3h revision)</span>
+          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            Phase 1: Foundation Rebuilding Active
+          </span>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap text-[11px]">
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">Prob & Stat: <strong>6h</strong></span>
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">Linear Algebra: <strong>6h</strong> (Foundational)</span>
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">Calculus: <strong>4.5h</strong></span>
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">Prog & DSA: <strong>6h</strong></span>
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">DBMS: <strong>5h</strong></span>
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">ML & AI: <strong>7h</strong></span>
+          <span className="px-2 py-1 rounded-md bg-surface-card border border-border text-white">Aptitude: <strong>4.5h</strong></span>
         </div>
       </div>
 
@@ -501,9 +541,11 @@ export const PlannerPage: React.FC = () => {
                   className="w-full p-2.5 rounded-lg bg-surface-card border border-border text-white focus:outline-none focus:border-primary"
                 >
                   <option value="Concept Learning">Concept Learning</option>
-                  <option value="Mathematical Practice">Mathematical Practice</option>
+                  <option value="Mathematical Derivation">Mathematical Derivation</option>
+                  <option value="Solved Examples">Solved Examples</option>
                   <option value="PYQ Practice">PYQ Practice</option>
                   <option value="Spaced Revision">Spaced Revision</option>
+                  <option value="Sectional Test">Sectional Test</option>
                   <option value="Mock Test">Mock Test</option>
                   <option value="Mock Analysis">Mock Analysis</option>
                 </select>

@@ -66,6 +66,17 @@ export const AnalyticsPage: React.FC = () => {
         </p>
       </div>
 
+      {/* Deficit / Pace Warning if falling behind */}
+      {kpis?.deficit_warning && (
+        <div className="p-4 rounded-xl bg-error/15 border border-error/40 flex items-start gap-3 animate-in fade-in">
+          <AlertTriangle className="w-5 h-5 text-error flex-shrink-0 mt-0.5" />
+          <div className="space-y-1 text-xs">
+            <span className="font-semibold text-white block">Pace Alert — January 15 Deadline Intelligence</span>
+            <p className="text-error-light leading-relaxed">{kpis.deficit_warning}</p>
+          </div>
+        </div>
+      )}
+
       {/* Top Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="glass-panel p-4 rounded-xl space-y-1">
@@ -74,14 +85,15 @@ export const AnalyticsPage: React.FC = () => {
             {kpis?.weighted_syllabus_completion_pct || 0}%
           </div>
           <span className="text-[11px] text-muted-light">
-            Sum of (Topic ratio × Est. Hours)
+            Remaining: {kpis?.remaining_estimated_hours ?? 299}h to study
           </span>
         </div>
 
         <div className="glass-panel p-4 rounded-xl space-y-1">
-          <span className="text-[10px] text-muted uppercase font-mono">Recorded Study Time</span>
+          <span className="text-[10px] text-muted uppercase font-mono">Weekly Target Run-rate</span>
           <div className="text-2xl font-bold font-mono text-secondary">
-            {kpis?.total_actual_study_hours || 0}h
+            {kpis?.weekly_actual_hours || 0}h
+            <span className="text-xs text-muted font-normal ml-1">/ {kpis?.weekly_target_hours || 39}h</span>
           </div>
           <span className="text-[11px] text-muted-light">
             7d average: {kpis?.seven_day_avg_daily_hours || 0}h/day
@@ -89,12 +101,12 @@ export const AnalyticsPage: React.FC = () => {
         </div>
 
         <div className="glass-panel p-4 rounded-xl space-y-1">
-          <span className="text-[10px] text-muted uppercase font-mono">Target Daily Run-rate</span>
+          <span className="text-[10px] text-muted uppercase font-mono">Required Pace</span>
           <div className="text-2xl font-bold font-mono text-amber-400">
-            {kpis?.required_daily_runrate_hours || 0}h/day
+            {kpis?.required_weekly_runrate_hours || 0}h/wk
           </div>
           <span className="text-[11px] text-muted-light">
-            To complete syllabus by Jan 15
+            {kpis?.required_daily_runrate_hours || 0}h/day to finish by Jan 15
           </span>
         </div>
 
@@ -104,7 +116,7 @@ export const AnalyticsPage: React.FC = () => {
             {analytics.unresolved_mistakes}
           </div>
           <span className="text-[11px] text-muted-light">
-            Total recorded: {analytics.total_mistakes}
+            {kpis?.pending_pyqs_count ?? 1020} pending PYQs target
           </span>
         </div>
       </div>

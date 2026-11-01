@@ -3,10 +3,12 @@ export interface UserSettings {
   exam_name: string;
   exam_date: string;
   timezone: string;
+  prep_start_date?: string;
   daily_target_hours: number;
   weekly_target_hours: number;
   max_daily_capacity_hours: number;
   syllabus_target_date: string;
+  mock_target_count?: number;
   pomodoro_focus_minutes: number;
   pomodoro_short_break: number;
   pomodoro_long_break: number;
@@ -16,6 +18,9 @@ export interface UserSettings {
   evening_review_time: string;
   baseline_confirmed: boolean;
   baselines_json: string;
+  subject_allocations_json?: string;
+  weekly_schedule_json?: string;
+  phases_json?: string;
   created_at_utc: string;
   updated_at_utc: string;
 }
@@ -82,7 +87,16 @@ export interface WorkItem {
   title: string;
   subject_id?: number | null;
   topic_id?: number | null;
-  session_type: 'Concept Learning' | 'Mathematical Practice' | 'PYQ Practice' | 'Spaced Revision' | 'Mock Test' | 'Mock Analysis';
+  session_type:
+    | 'Concept Learning'
+    | 'Mathematical Derivation'
+    | 'Solved Examples'
+    | 'PYQ Practice'
+    | 'Spaced Revision'
+    | 'Sectional Test'
+    | 'Mock Test'
+    | 'Mock Analysis'
+    | 'Mathematical Practice';
   scheduled_date: string;
   start_time?: string | null;
   end_time?: string | null;
@@ -230,6 +244,17 @@ export interface DashboardKPIs {
     days_remaining: number;
     hours_remaining: number;
     today_date: string;
+    prep_start_date?: string;
+    syllabus_target_date?: string;
+    days_to_syllabus_deadline?: number;
+    current_phase?: {
+      id: number;
+      name: string;
+      start_date: string;
+      end_date: string;
+      objectives: string[];
+    } | null;
+    next_milestone?: string;
   };
   kpis: {
     weighted_syllabus_completion_pct: number;
@@ -242,10 +267,20 @@ export interface DashboardKPIs {
     total_actual_study_hours: number;
     total_planned_hours: number;
     seven_day_avg_daily_hours: number;
+    weekly_actual_hours?: number;
+    weekly_target_hours?: number;
+    remaining_estimated_hours?: number;
     required_daily_runrate_hours: number;
+    required_weekly_runrate_hours?: number;
     target_daily_hours: number;
     current_streak_days: number;
     unfinished_count: number;
+    overdue_srs_count?: number;
+    pending_pyqs_count?: number;
+    unresolved_mistakes_count?: number;
+    latest_mock_score?: number | null;
+    is_behind_schedule?: boolean;
+    deficit_warning?: string | null;
   };
   observations: string[];
 }

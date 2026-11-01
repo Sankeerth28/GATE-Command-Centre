@@ -2,23 +2,26 @@
 
 > **Target Examination:** GATE 2027 — Data Science & Artificial Intelligence (DA)  
 > **Exam Date:** February 6, 2027 (09:30 AM IST)  
-> **Syllabus Target Completion Date:** January 15, 2027  
+> **Preparation Start Date:** November 2, 2026  
+> **Syllabus Target Completion Deadline:** January 15, 2027 (Hard Deadline)  
 > **Total Curriculum Scope:** 7 Subjects | 20 Chapters | 51 Topics | 299 Estimated Focused Hours  
-> **Target Score:** 80+ Marks (All India Rank < 100)  
+> **Weekly Study Capacity:** 39.0 Focused Hours (Mon–Sat: 6.0h / day, Sun: 3.0h revision)  
+> **Primary Target:** 80+ Marks (All India Rank < 100)  
+> **Timezone:** Asia/Kolkata (IST)  
 > **Tracking Portal:** [https://sankeerth28.github.io/GATE-Command-Centre/](https://sankeerth28.github.io/GATE-Command-Centre/)
 
 ---
 
 ## 1. Executive Summary & Strategy Overview
 
-The **GATE Command Centre** is engineered to replace vague, disorganized exam prep with an automated, algorithmically balanced study system. 
+The **GATE Command Centre** is engineered to replace vague, disorganized exam prep with an automated, algorithmically balanced study and revision system tailored specifically for **GATE DA 2027**.
 
-The preparation model is built on five pillars:
+The preparation model is built on five core operational pillars:
 1. **Official GATE DA Syllabus Coverage:** All 7 official subjects and 51 topics mapped with explicit subtopic checklists, weightages, and difficulty ratings.
-2. **Subject Baseline Diagnostics:** Allocates extra preparation time and earlier scheduling to identified weak foundational subjects (*Probability & Statistics*, *Calculus & Optimization*, *DBMS*).
-3. **Leitner Spaced Repetition (SRS):** Mathematically schedules topic revisions at intervals of 1, 3, 7, 14, 30, and 90 days depending on your post-study confidence ratings.
-4. **Daily Execution Guardrails:** Daily target of 4.0 hours (maximum 8.0 hours capacity ceiling) split into Pomodoro or Deep Work sessions with morning check-ins and evening reviews.
-5. **Zero-Loss Mistake Remediation:** Every incorrect question in practice or mock tests is tagged by root cause in the **Mistake Vault** and re-tested until mastered.
+2. **Weekly 39-Hour Timetable Matrix:** A balanced multi-subject weekly allocation distributing 39 hours across the 7 subjects (Probability & Statistics 6h, Linear Algebra 6h, Calculus & Optimization 4.5h, Programming & DSA 6h, DBMS 5h, Machine Learning & AI 7h, General Aptitude 4.5h).
+3. **Phase-Driven Milestone Progression:** Four strict preparation phases spanning Nov 2, 2026 to Jan 15, 2027, followed by a dedicated Full-Length Mock Examination period (Jan 16 – Feb 5, 2027) targeting 10–15 proctored mocks.
+4. **Linear Algebra Foundational Rebuilding:** Rigorous re-assessment and sequential coverage of Linear Algebra across 6 core modules before advanced ML applications.
+5. **Zero-Loss Mistake Vault & Spaced Repetition (SRS):** Incomplete questions are tagged by 5 root causes in the Mistake Vault, while Leitner SRS mathematically schedules topic revisions at 1, 3, 7, 14, 30, and 90-day intervals.
 
 ---
 
@@ -395,76 +398,110 @@ Total Curriculum Scope: 299 Hours | 51 Topics | 100 Marks
 
 ---
 
-## 4. The 4-Phase Personalized Execution Plan
+## 4. The 5-Phase Personalized Execution Plan
 
 ```mermaid
 flowchart LR
-    P1["Phase 1: Foundations (Months 1-4)<br>• PROB_STAT, CALC_OPT, LIN_ALG<br>• PROG_DSA Basics<br>• Est: ~130 Hours"] --> P2["Phase 2: Core ML/AI & DBMS (Months 5-8)<br>• Supervised & Unsupervised ML<br>• Neural Nets, SQL, Normalization<br>• Est: ~110 Hours"]
-    P2 --> P3["Phase 3: High-Yield Practice (Months 9-11)<br>• Sectional Tests & Full Mocks<br>• PYQs & Speed Calibration<br>• Est: ~40 Hours"]
-    P3 --> P4["Phase 4: Spaced Mastery (Month 12)<br>• Leitner Revisions<br>• Mistake Vault Wipeout<br>• Formula Journal Polish"]
+    P1["Phase 1: Foundation Rebuilding<br>(Nov 2 – Nov 15, 2026)<br>• Linear Algebra sequence<br>• Prob & Stats, Calc & Opt"] --> P2["Phase 2: Core Subject Coverage<br>(Nov 16 – Dec 13, 2026)<br>• Supervised ML, SVM, Relational DB<br>• DSA Graphs, Heaps, Distributions"]
+    P2 --> P3["Phase 3: Syllabus Completion<br>(Dec 14 – Dec 27, 2026)<br>• Neural Nets, Clustering, AI Search<br>• 100% 51-topic 1st pass completion"]
+    P3 --> P4["Phase 4: Consolidation & Backlog<br>(Dec 28, 2026 – Jan 15, 2027)<br>• Jan 15 Hard Deadline<br>• Mistake Vault & Derivations"]
+    P4 --> P5["Final Mock Preparation<br>(Jan 16 – Feb 5, 2027)<br>• 10-15 Proctored 180m Mocks<br>• Feb 6, 2027: GATE Exam!"]
 ```
 
-### Phase 1: Mathematical & Algorithmic Foundations (Months 1–4)
-- **Primary Goal:** Solidify the 3 weak mathematical baselines (`PROB_STAT`, `CALC_OPT`, `DBMS_DWH`) interleaved with `LIN_ALG` and `PROG_DSA`.
-- **Milestone:** Finish all 20 foundation topics and solve 20+ PYQs per topic.
-- **Weekly Balance:**
-  - 3 sessions/week: Probability & Linear Algebra
-  - 2 sessions/week: Calculus & Optimization
-  - 2 sessions/week: Python & Data Structures
+### Phase 1: Foundation Rebuilding (November 2 – November 15, 2026)
+- **Primary Objectives:**
+  - Rebuild Linear Algebra from fundamentals using the strict 6-module sequence.
+  - Begin Probability & Statistics (Combinatorics, Axioms, Conditional Probability).
+  - Begin Calculus & Optimization (Limits, continuity, differentiation, single-variable max/min).
+  - Continue Programming and DSA (Python syntax, arrays, linked lists, basic sorting).
+  - Maintain regular DBMS and ML exposure.
+- **Key Milestones:**
+  - Linear Algebra vector spaces and row echelon forms consolidated.
+  - Baseline confidence reassessment completed for all foundational topics.
 
-### Phase 2: Core ML/AI, Deep Learning & Database Systems (Months 5–8)
-- **Primary Goal:** Master mathematical derivations for Machine Learning algorithms, Backpropagation, Search heuristics, and relational normalization.
-- **Milestone:** Complete all 17 topics across `ML_AI` and `DBMS_DWH`.
-- **Weekly Balance:**
-  - 3 sessions/week: Machine Learning & Artificial Intelligence
-  - 2 sessions/week: Database Systems & Indexing
-  - 1 session/week: Advanced Algorithms (Graphs, Dynamic Programming)
-  - 1 session/week: General Aptitude speed practice
+### Phase 2: Core Subject Coverage (November 16 – December 13, 2026)
+- **Primary Objectives:**
+  - Complete the remainder of Linear Algebra (Eigenvalues, SVD, Orthogonality).
+  - Progress through continuous probability distributions, joint distributions, and statistical inference.
+  - Cover multivariable Calculus, gradients, and unconstrained optimization.
+  - Cover DSA trees, heaps, graphs, hashing, and asymptotic analysis.
+  - Cover relational algebra, SQL queries, B+ tree indexing, normalization, and ACID transactions.
+  - Cover supervised Machine Learning (Linear regression, Logistic regression, SVM, Decision Trees).
+- **Key Milestones:**
+  - Regular PYQ practice alongside concept learning.
+  - $\ge 60\%$ of total syllabus topics marked as learning complete.
 
-### Phase 3: Sectional Tests, Full-Length Mocks & Speed Accuracy (Months 9–11)
-- **Primary Goal:** Transition from learning to high-speed exam execution under strict 180-minute time constraints.
-- **Target:** Complete at least 15 Full-Length Mocks (65 Questions, 100 Marks each).
-- **Weekly Cadence:**
-  - Every Saturday (09:30 AM – 12:30 PM): Full-Length Proctored Mock Test.
-  - Sunday Morning: Comprehensive 3-hour test analysis + Mistake Vault logging.
-  - Monday–Friday: Remediation of identified weak topics.
+### Phase 3: Remaining Syllabus Completion (December 14 – December 27, 2026)
+- **Primary Objectives:**
+  - Deep Learning and Multi-Layer Perceptrons (Feedforward, backpropagation).
+  - Unsupervised learning (PCA, $k$-Means, Hierarchical clustering).
+  - AI Search algorithms (Informed/Uninformed, A*, Adversarial minimax search).
+  - Remaining DBMS topics (Data Warehousing, ER models, schema design).
+  - Remaining Probability topics (Hypothesis testing, limit theorems) and multivariable optimization.
+  - Sectional tests and topic-wise PYQs.
+- **Key Milestones:**
+  - **December 27 Milestone:** 100% first learning pass across all 51 syllabus topics completed.
 
-### Phase 4: Final Consolidation & Spaced Mastery (Month 12 — Jan to Feb 2027)
-- **Primary Goal:** Zero new topics. Complete mastery of high-frequency formulas and elimination of recurring error patterns.
-- **Rhythm:**
-  - Daily review of Formula & Study Journal entries.
-  - Resolving all open entries in the Mistake Vault.
-  - Quick-fire 30-minute revision sprints on Leitner-flagged topics.
+### Phase 4: Consolidation and Backlog Closure (December 28, 2026 – January 15, 2027)
+- **Primary Objectives:**
+  - Finish any incomplete topics and resolve pending PYQ queues.
+  - Rigorous revision of mathematical derivations and proofs.
+  - Systematic resolution of all entries in the Mistake Vault.
+  - High-yield sectional tests and weak-topic remediation sprints.
+  - Consolidation and memorization of mathematical formula sheets.
+- **Key Milestones:**
+  - **January 15, 2027:** Hard syllabus closure deadline. Zero unfinished syllabus items beyond this date.
+
+### Final Examination Preparation (January 16 – February 5, 2027)
+- **Primary Objectives:**
+  - Full-length 180-minute GATE DA mock examinations scheduled on Wednesdays and Saturdays (09:30 AM – 12:30 PM).
+  - Dedicated 3-hour mock analysis session following every mock test.
+  - Rapid multi-subject revision rotations across all 7 subjects.
+  - Elimination of recurring negative marking traps and speed calibration.
+- **Target:** At least 10 rigorously analyzed full-length mocks (15 as stretch target).
+- **GATE Examination Date:** February 6, 2027 (09:30 AM IST).
 
 ---
 
-## 5. Daily Routine & Operating System
+## 5. Recurring Weekly Timetable (39.0 Focused Hours)
 
-The system manages your daily study rhythm through an integrated workflow:
+The preparation planner follows a strict weekly 39.0-hour allocation matrix (Monday through Saturday: 6.0 hours/day; Sunday: 3.0 lighter revision hours):
 
-```
-07:30 IST ──▶ Morning Check-in Modal
-              ├── Review yesterday's completed sessions
-              ├── Inspect today's prioritized 3-4 work items
-              └── Confirm mental readiness & availability
+| Day | Capacity | Scheduled Subject Modules & Allocation |
+| :--- | :---: | :--- |
+| **Monday** | 6.0 h | • Probability and Statistics: 2.0 h<br>• Linear Algebra: 2.0 h<br>• Programming and DSA: 2.0 h |
+| **Tuesday** | 6.0 h | • Probability and Statistics: 2.0 h<br>• Calculus and Optimization: 2.0 h<br>• Database Management & DWH: 2.0 h |
+| **Wednesday** | 6.0 h | • Linear Algebra: 2.0 h<br>• Machine Learning and AI: 2.0 h<br>• General Aptitude: 1.0 h<br>• Database Management & DWH: 1.0 h |
+| **Thursday** | 6.0 h | • Calculus and Optimization: 2.0 h<br>• Programming and DSA: 2.0 h<br>• Machine Learning and AI: 2.0 h |
+| **Friday** | 6.0 h | • Probability and Statistics: 2.0 h<br>• Database Management & DWH: 2.0 h<br>• Linear Algebra: 1.0 h<br>• General Aptitude: 1.0 h |
+| **Saturday** | 6.0 h | • Machine Learning and AI: 2.0 h<br>• Programming and DSA: 2.0 h<br>• Calculus and Optimization: 0.5 h<br>• General Aptitude: 1.5 h |
+| **Sunday** | 3.0 h | • Linear Algebra: 1.0 h<br>• Machine Learning and AI: 1.0 h<br>• General Aptitude: 1.0 h<br>*(Prioritizes weekly revision, PYQ consolidation, backlog reflow & weekly performance analysis)* |
+| **TOTAL** | **39.0 h** | **PROB: 6h \| LIN_ALG: 6h \| CALC: 4.5h \| DSA: 6h \| DBMS: 5h \| ML_AI: 7h \| APT: 4.5h** |
 
-08:00-21:00 ─▶ Focused Work Execution
-              ├── 60-min structured blocks (Concept -> Math -> PYQ)
-              ├── Pomodoro (25/5) or Deep Work (50/10) timer modes
-              └── Zero-distraction full-screen timer bar
+### Linear Algebra — Sequential Revision Sequence
+Because Linear Algebra is a foundational re-study subject, it is strictly sequenced as follows:
+1. **Vector Spaces and Subspaces:** Axioms, Real Euclidean spaces $\mathbb{R}^n$, Subspaces, Linear span, Linear independence/dependence, Basis and dimension.
+2. **Matrices and Systems of Linear Equations:** Row echelon form (REF), Reduced REF, Gaussian elimination, Rank-nullity theorem, Consistency ($Ax = b$).
+3. **Linear Transformations:** Kernel, image, matrix representation, change of basis, similarity transformations.
+4. **Eigenvalues and Eigenvectors:** Characteristic polynomials, algebraic/geometric multiplicity, diagonalization, Cayley-Hamilton theorem.
+5. **Orthogonality and Projections:** Inner products, Cauchy-Schwarz, Gram-Schmidt orthogonalization, orthogonal projection matrices, least-squares solutions.
+6. **Advanced Factorizations and SVD:** Singular Value Decomposition ($U \Sigma V^T$), low-rank approximations, PCA connections, LU decomposition, Cholesky factorization.
 
-21:30 IST ──▶ Evening Review Modal
-              ├── Rate confidence for each finished topic
-              ├── Log PYQs solved & actual hours
-              ├── Automated Leitner SRS next date calculation
-              └── Smart Backlog Reflow (shifts incomplete items forward)
-```
+### Supported Work Item Session Types
+The planner and timer support 8 explicit session types for complete tracking fidelity:
+1. `CONCEPT_LEARNING`: Core theory and initial concept assimilation.
+2. `DERIVATION_PRACTICE`: Step-by-step mathematical proofs and manual derivation.
+3. `PYQ_PRACTICE`: Solving official GATE/CS/DA prior-year questions.
+4. `FORMULA_REVISION`: High-speed formula flashcard and journal review.
+5. `MISTAKE_REVISION`: Re-solving questions from the Mistake Vault without notes.
+6. `WEAK_TOPIC_REVISION`: Targeted remediation for topics rated Weak or Average.
+7. `MOCK_TEST`: Timed 180-minute full mock examination or 60-minute sectional test.
+8. `MOCK_ANALYSIS`: Detailed 3-hour post-mock analysis and error classification.
 
 ### Daily Workload Capacity Safeguards
-- **Baseline Target:** 4.0 Hours / day (28 Hours / week).
-- **Soft Cap:** 6.0 Hours / day.
+- **Daily Capacity Target:** 6.0 Hours / day (Mon–Sat), 3.0 Hours (Sun).
 - **Hard Capacity Ceiling:** 8.0 Hours / day.
-- *Overload Protection:* The scheduler will never stack more than 8 hours on a single day. Incomplete tasks automatically trigger the **Smart Reflow** algorithm to redistribute tasks into the next available slots without corrupting historical logs.
+- **Smart Reflow Algorithm:** Incomplete tasks are rescheduled forward respecting daily ceilings (3h on Sun, 6h on Mon-Sat). If total required backlog exceeds available days to January 15, the system raises a visible deficit warning banner.
 
 ---
 
@@ -527,3 +564,4 @@ Your preparation progress is 100% yours and accessible both online and offline:
 - **Online Live Web App:** [https://sankeerth28.github.io/GATE-Command-Centre/](https://sankeerth28.github.io/GATE-Command-Centre/)
 - **Local Application:** Run `npm --prefix frontend run dev` and `uvicorn app.main:app` to use your local SQLite database (`gate_command_centre.db`).
 - **Data Backup:** At any time, navigate to **Settings & Data Management** $\rightarrow$ click **Export JSON Backup** to save a complete, portable 13-table snapshot of your preparation journey.
+

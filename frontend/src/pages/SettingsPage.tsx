@@ -21,6 +21,15 @@ export const SettingsPage: React.FC = () => {
   const [backendUrl, setBackendUrl] = useState(
     typeof window !== 'undefined' ? localStorage.getItem('gate_backend_url') || '' : ''
   );
+  const [subjectAllocs, setSubjectAllocs] = useState<Record<string, number>>({
+    PROB_STAT: 6.0,
+    LIN_ALG: 6.0,
+    CALC_OPT: 4.5,
+    PROG_DSA: 6.0,
+    DBMS_DWH: 5.0,
+    ML_AI: 7.0,
+    GEN_APT: 4.5,
+  });
 
   useEffect(() => {
     const load = async () => {
@@ -28,6 +37,11 @@ export const SettingsPage: React.FC = () => {
         setLoading(true);
         const data = await api.getSettings();
         setSettings(data);
+        if (data.subject_allocations_json) {
+          try {
+            setSubjectAllocs(JSON.parse(data.subject_allocations_json));
+          } catch {}
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -48,9 +62,15 @@ export const SettingsPage: React.FC = () => {
       } else {
         localStorage.removeItem('gate_backend_url');
       }
-      const updated = await api.updateSettings(settings);
+      const totalWeekly = Object.values(subjectAllocs).reduce((a, b) => a + b, 0);
+      const payload: UserSettings = {
+        ...settings,
+        weekly_target_hours: totalWeekly,
+        subject_allocations_json: JSON.stringify(subjectAllocs),
+      };
+      const updated = await api.updateSettings(payload);
       setSettings(updated);
-      setMessage('Settings saved successfully!');
+      setMessage('Settings and weekly allocations saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (e) {
       console.error(e);
@@ -136,13 +156,13 @@ export const SettingsPage: React.FC = () => {
             <span>Target Examination & Schedule Parameters</span>
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             <div>
-              <label className="text-muted block mb-1">Target Examination Date & Time (IST)</label>
+              <label className="text-muted block mb-1">Preparation Start Date</label>
               <input
-                type="text"
-                value={settings.exam_date}
-                onChange={(e) => setSettings({ ...settings, exam_date: e.target.value })}
+                type="date"
+                value={settings.prep_start_date || '2026-11-02'}
+                onChange={(e) => setSettings({ ...settings, prep_start_date: e.target.value })}
                 className="w-full p-2.5 rounded-lg bg-surface border border-border text-white focus:outline-none focus:border-primary font-mono"
               />
             </div>
@@ -158,7 +178,17 @@ export const SettingsPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-muted block mb-1">Daily Study Target (Hours)</label>
+              <label className="text-muted block mb-1">Target Examination Date & Time (IST)</label>
+              <input
+                type="text"
+                value={settings.exam_date}
+                onChange={(e) => setSettings({ ...settings, exam_date: e.target.value })}
+                className="w-full p-2.5 rounded-lg bg-surface border border-border text-white focus:outline-none focus:border-primary font-mono"
+              />
+            </div>
+
+            <div>
+              <label className="text-muted block mb-1">Daily Focus Study Capacity (Hours)</label>
               <input
                 type="number"
                 step="0.5"
@@ -168,6 +198,7 @@ export const SettingsPage: React.FC = () => {
                 onChange={(e) => setSettings({ ...settings, daily_target_hours: Number(e.target.value) })}
                 className="w-full p-2.5 rounded-lg bg-surface border border-border text-white focus:outline-none focus:border-primary font-mono"
               />
+              <span className="text-[10px] text-muted-light block mt-0.5">Mon–Sat: 6h • Sun: 3h default</span>
             </div>
 
             <div>
@@ -181,6 +212,164 @@ export const SettingsPage: React.FC = () => {
                 onChange={(e) => setSettings({ ...settings, max_daily_capacity_hours: Number(e.target.value) })}
                 className="w-full p-2.5 rounded-lg bg-surface border border-border text-white focus:outline-none focus:border-primary font-mono"
               />
+              <span className="text-[10px] text-muted-light block mt-0.5">Scheduler hard ceiling</span>
+            </div>
+
+            <div>
+              <label className="text-muted block mb-1">Full-Length Mock Target Count</label>
+              <input
+                type="number"
+                min="5"
+                max="30"
+                value={settings.mock_target_count || 10}
+                onChange={(e) => setSettings({ ...settings, mock_target_count: Number(e.target.value) })}
+                className="w-full p-2.5 rounded-lg bg-surface border border-border text-white focus:outline-none focus:border-primary font-mono"
+              />
+              <span className="text-[10px] text-muted-light block mt-0.5">Min: 10 • Stretch: 15</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Subject-Wise Weekly Allocation (39 Focused Hours) */}
+        <div className="glass-panel p-5 rounded-xl space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <h3 className="font-semibold text-sm text-white flex items-center gap-2">
+              <Clock className="w-4 h-4 text-secondary" />
+              <span>Subject-Wise Weekly Allocation (Target: 39 Hours)</span>
+            </h3>
+            <span
+              className={`text-xs font-mono font-bold px-2.5 py-1 rounded-lg border ${
+                Object.values(subjectAllocs).reduce((a, b) => a + b, 0) === 39
+                  ? 'bg-success/20 text-success border-success/40'
+                  : 'bg-warning/20 text-warning border-warning/40'
+              }`}
+            >
+              Total: {Object.values(subjectAllocs).reduce((a, b) => a + b, 0)} / 39.0 Hours
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div>
+              <label className="text-muted block mb-1">Probability & Statistics</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.PROB_STAT || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, PROB_STAT: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-muted block mb-1">Linear Algebra (Revision)</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.LIN_ALG || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, LIN_ALG: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-muted block mb-1">Calculus & Optimization</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.CALC_OPT || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, CALC_OPT: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-muted block mb-1">Programming & DSA</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.PROG_DSA || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, PROG_DSA: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-muted block mb-1">Database Management</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.DBMS_DWH || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, DBMS_DWH: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-muted block mb-1">Machine Learning & AI</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.ML_AI || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, ML_AI: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-muted block mb-1">General Aptitude</label>
+              <input
+                type="number"
+                step="0.5"
+                min="0"
+                value={subjectAllocs.GEN_APT || 0}
+                onChange={(e) => setSubjectAllocs({ ...subjectAllocs, GEN_APT: Number(e.target.value) })}
+                className="w-full p-2 rounded-lg bg-surface border border-border text-white font-mono"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 5-Phase Preparation Timeline Overview */}
+        <div className="glass-panel p-5 rounded-xl space-y-3">
+          <h3 className="font-semibold text-sm text-white flex items-center gap-2">
+            <Clock className="w-4 h-4 text-primary" />
+            <span>Preparation Phases (Nov 2, 2026 – Feb 6, 2027)</span>
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+            <div className="p-3 rounded-lg bg-surface-card border border-border space-y-1">
+              <div className="flex items-center justify-between">
+                <strong className="text-white">Phase 1: Foundation Rebuilding</strong>
+                <span className="text-[10px] font-mono text-primary">Nov 2 – Nov 15</span>
+              </div>
+              <p className="text-[11px] text-muted-light">Linear Algebra foundation sequence, Prob axioms, Limits, Python OOP.</p>
+            </div>
+            <div className="p-3 rounded-lg bg-surface-card border border-border space-y-1">
+              <div className="flex items-center justify-between">
+                <strong className="text-white">Phase 2: Core Subject Coverage</strong>
+                <span className="text-[10px] font-mono text-primary">Nov 16 – Dec 13</span>
+              </div>
+              <p className="text-[11px] text-muted-light">Remaining LinAlg, Prob distributions, Multivariable Calc, Trees/Graphs, SQL/ACID, ML.</p>
+            </div>
+            <div className="p-3 rounded-lg bg-surface-card border border-border space-y-1">
+              <div className="flex items-center justify-between">
+                <strong className="text-white">Phase 3: Remaining Syllabus Completion</strong>
+                <span className="text-[10px] font-mono text-primary">Dec 14 – Dec 27</span>
+              </div>
+              <p className="text-[11px] text-muted-light">Deep Learning, PCA, Clustering, Search Heuristics. 100% syllabus first-pass complete.</p>
+            </div>
+            <div className="p-3 rounded-lg bg-surface-card border border-border space-y-1">
+              <div className="flex items-center justify-between">
+                <strong className="text-white">Phase 4: Consolidation & Backlog Closure</strong>
+                <span className="text-[10px] font-mono text-primary">Dec 28 – Jan 15</span>
+              </div>
+              <p className="text-[11px] text-muted-light">Backlog closure, pending PYQs, mathematical derivations, Mistake Vault wipeout.</p>
+            </div>
+            <div className="p-3 rounded-lg bg-surface-card border border-border space-y-1 md:col-span-2">
+              <div className="flex items-center justify-between">
+                <strong className="text-white">Final Exam Prep: Full Mock Simulations</strong>
+                <span className="text-[10px] font-mono text-secondary">Jan 16 – Feb 5</span>
+              </div>
+              <p className="text-[11px] text-muted-light">10 to 15 Full-Length 180-min mocks, 3h deep analysis, speed recall. Exam on Feb 6, 2027.</p>
             </div>
           </div>
         </div>

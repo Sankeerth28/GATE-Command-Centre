@@ -12,6 +12,133 @@ const CONFIDENCE_INTERVALS: Record<string, number[]> = {
   Strong: [21, 45, 90],
 };
 
+export const DEFAULT_SUBJECT_ALLOCATIONS_JSON = JSON.stringify({
+  PROB_STAT: 6.0,
+  LIN_ALG: 6.0,
+  CALC_OPT: 4.5,
+  PROG_DSA: 6.0,
+  DBMS_DWH: 5.0,
+  ML_AI: 7.0,
+  GEN_APT: 4.5,
+});
+
+export const DEFAULT_WEEKLY_SCHEDULE_JSON = JSON.stringify({
+  Monday: [
+    { subject_code: 'PROB_STAT', hours: 2.0 },
+    { subject_code: 'LIN_ALG', hours: 2.0 },
+    { subject_code: 'PROG_DSA', hours: 2.0 },
+  ],
+  Tuesday: [
+    { subject_code: 'PROB_STAT', hours: 2.0 },
+    { subject_code: 'CALC_OPT', hours: 2.0 },
+    { subject_code: 'DBMS_DWH', hours: 2.0 },
+  ],
+  Wednesday: [
+    { subject_code: 'LIN_ALG', hours: 2.0 },
+    { subject_code: 'ML_AI', hours: 2.0 },
+    { subject_code: 'GEN_APT', hours: 1.0 },
+    { subject_code: 'DBMS_DWH', hours: 1.0 },
+  ],
+  Thursday: [
+    { subject_code: 'CALC_OPT', hours: 2.0 },
+    { subject_code: 'PROG_DSA', hours: 2.0 },
+    { subject_code: 'ML_AI', hours: 2.0 },
+  ],
+  Friday: [
+    { subject_code: 'PROB_STAT', hours: 2.0 },
+    { subject_code: 'DBMS_DWH', hours: 2.0 },
+    { subject_code: 'LIN_ALG', hours: 1.0 },
+    { subject_code: 'GEN_APT', hours: 1.0 },
+  ],
+  Saturday: [
+    { subject_code: 'ML_AI', hours: 2.0 },
+    { subject_code: 'PROG_DSA', hours: 2.0 },
+    { subject_code: 'CALC_OPT', hours: 0.5 },
+    { subject_code: 'GEN_APT', hours: 1.5 },
+  ],
+  Sunday: [
+    { subject_code: 'LIN_ALG', hours: 1.0 },
+    { subject_code: 'ML_AI', hours: 1.0 },
+    { subject_code: 'GEN_APT', hours: 1.0 },
+  ],
+});
+
+export const DEFAULT_PHASES_JSON = JSON.stringify([
+  {
+    id: 1,
+    name: 'Phase 1: Foundation Rebuilding',
+    start_date: '2026-11-02',
+    end_date: '2026-11-15',
+    objectives: [
+      'Rebuild Linear Algebra from fundamentals (Vector Spaces, Matrices, Elementary Row Ops)',
+      'Begin Probability and Statistics (Counting, Axioms, Conditional Prob)',
+      'Begin Calculus and Optimization (Limits, Continuity, Differentiation)',
+      'Continue Programming and DSA (Python OOP, Lists, Stacks, Queues)',
+      'Maintain regular DBMS and ML exposure',
+    ],
+  },
+  {
+    id: 2,
+    name: 'Phase 2: Core Subject Coverage',
+    start_date: '2026-11-16',
+    end_date: '2026-12-13',
+    objectives: [
+      'Complete most Linear Algebra topics (Transformations, Eigenvalues, Orthogonality, SVD)',
+      'Progress through Probability distributions and statistical inference',
+      'Cover multivariable Calculus and Optimization (Gradients, Hessian, Constraints)',
+      'Cover DSA trees, heaps, graphs and algorithms',
+      'Cover relational algebra, SQL, normalization and transactions',
+      'Cover supervised Machine Learning and SVM',
+      'Maintain PYQ practice alongside concept learning',
+    ],
+  },
+  {
+    id: 3,
+    name: 'Phase 3: Remaining Syllabus Completion',
+    start_date: '2026-12-14',
+    end_date: '2026-12-27',
+    objectives: [
+      'Deep Learning and Neural Networks (MLP, Backprop, Optimizers)',
+      'Dimensionality Reduction (PCA) and Clustering (k-Means, DBSCAN)',
+      'AI Search Algorithms (A*, Heuristics) and Adversarial Search (Minimax, Alpha-Beta)',
+      'Remaining DBMS, Probability, and Calculus topics',
+      'Remaining DSA topics (Sorting, Graphs)',
+      'Topic-wise PYQs and sectional tests',
+      'Target: Complete first learning pass of all 51 topics by December 27',
+    ],
+  },
+  {
+    id: 4,
+    name: 'Phase 4: Consolidation and Backlog Closure',
+    start_date: '2026-12-28',
+    end_date: '2027-01-15',
+    objectives: [
+      'Finish incomplete topics and backlog closure',
+      'Complete pending PYQs across all subjects',
+      'Revise mathematical derivations and proofs',
+      'Resolve all open Mistake Vault entries',
+      'Conduct timed sectional tests',
+      'Consolidate formula sheets and study journals',
+      'January 15: Hard syllabus closure deadline',
+    ],
+  },
+  {
+    id: 5,
+    name: 'Final Examination Preparation',
+    start_date: '2027-01-16',
+    end_date: '2027-02-05',
+    objectives: [
+      'Full-length GATE DA mock examinations (Min: 10, Stretch: 15)',
+      'Detailed 3-hour mock analysis after every test',
+      'Systematic revision of all 7 subjects',
+      'Formula and derivation speed-recall',
+      'Weak-topic remediation without new syllabus learning',
+      'Time management, question selection & negative mark minimization',
+      'February 6, 2027: GATE DA Examination',
+    ],
+  },
+]);
+
 function getLocal<T>(key: string, defaultValue: T): T {
   try {
     const item = localStorage.getItem(key);
@@ -31,8 +158,28 @@ function setLocal<T>(key: string, value: T): void {
 
 // Initialize default data if not present
 function initializeLocalStore() {
+  const existingSettings = getLocal<UserSettings | null>('gate_settings', null);
+  if (existingSettings) {
+    // Upgrade existing stored settings to 39h weekly / 6h daily if on legacy default
+    let modified = false;
+    if (existingSettings.weekly_target_hours === 28.0 || !existingSettings.weekly_schedule_json) {
+      existingSettings.daily_target_hours = 6.0;
+      existingSettings.weekly_target_hours = 39.0;
+      existingSettings.prep_start_date = '2026-11-02';
+      existingSettings.syllabus_target_date = '2027-01-15';
+      existingSettings.mock_target_count = 10;
+      existingSettings.subject_allocations_json = DEFAULT_SUBJECT_ALLOCATIONS_JSON;
+      existingSettings.weekly_schedule_json = DEFAULT_WEEKLY_SCHEDULE_JSON;
+      existingSettings.phases_json = DEFAULT_PHASES_JSON;
+      modified = true;
+    }
+    if (modified) {
+      setLocal('gate_settings', existingSettings);
+    }
+  }
+
   const initialized = localStorage.getItem('gate_initialized_v3');
-  if (initialized) return;
+  if (initialized && existingSettings) return;
 
   // 1. Settings
   const settings: UserSettings = {
@@ -40,10 +187,12 @@ function initializeLocalStore() {
     exam_name: 'GATE 2027 — Data Science and Artificial Intelligence (DA)',
     exam_date: '2027-02-06T09:30:00+05:30',
     timezone: 'Asia/Kolkata',
-    daily_target_hours: 4.0,
-    weekly_target_hours: 28.0,
+    prep_start_date: '2026-11-02',
+    daily_target_hours: 6.0,
+    weekly_target_hours: 39.0,
     max_daily_capacity_hours: 8.0,
     syllabus_target_date: '2027-01-15',
+    mock_target_count: 10,
     pomodoro_focus_minutes: 25,
     pomodoro_short_break: 5,
     pomodoro_long_break: 15,
@@ -61,6 +210,9 @@ function initializeLocalStore() {
       DBMS_DWH: 'Weak',
       GEN_APT: 'Intermediate',
     }),
+    subject_allocations_json: DEFAULT_SUBJECT_ALLOCATIONS_JSON,
+    weekly_schedule_json: DEFAULT_WEEKLY_SCHEDULE_JSON,
+    phases_json: DEFAULT_PHASES_JSON,
     created_at_utc: new Date().toISOString(),
     updated_at_utc: new Date().toISOString(),
   };
@@ -548,28 +700,269 @@ export const localStore = {
     return item;
   },
 
-  generatePlan: async (_startDate?: string, _targetDate?: string) => {
-    return { status: 'success', message: 'Study plan maintained and balanced in Local Storage.', created_count: 0 };
+  generatePlan: async (startDate?: string, targetDate?: string) => {
+    initializeLocalStore();
+    const settings = getLocal<UserSettings>('gate_settings', {} as any);
+    const start = startDate || settings.prep_start_date || '2026-11-02';
+    const target = targetDate || settings.syllabus_target_date || '2027-01-15';
+
+    const startDt = new Date(start);
+    const targetDt = new Date(target);
+    const totalDays = Math.max(1, Math.floor((targetDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24)) + 1);
+
+    const weeklySchedule: Record<string, Array<{ subject_code: string; hours: number }>> = JSON.parse(
+      settings.weekly_schedule_json || DEFAULT_WEEKLY_SCHEDULE_JSON
+    );
+    const phases: Array<{ id: number; name: string; start_date: string; end_date: string; objectives: string[] }> = JSON.parse(
+      settings.phases_json || DEFAULT_PHASES_JSON
+    );
+
+    const subjects = getLocal<Subject[]>('gate_subjects', []);
+    const topics = getLocal<Topic[]>('gate_topics', []);
+    const existingItems = getLocal<WorkItem[]>('gate_work_items', []);
+
+    // Keep completed items
+    const preservedItems = existingItems.filter(
+      (it) => it.scheduled_date < start || it.status === 'Completed' || it.status === 'In Progress'
+    );
+
+    const subjCodeMap = new Map(subjects.map((s) => [s.code, s]));
+    const topicsBySubj: Record<number, Topic[]> = {};
+    for (const t of topics) {
+      if (!topicsBySubj[t.subject_id]) topicsBySubj[t.subject_id] = [];
+      topicsBySubj[t.subject_id].push(t);
+    }
+
+    // Linear Algebra strict sequence
+    const linAlgSubj = subjCodeMap.get('LIN_ALG');
+    const LA_SEQ = [
+      'Vector Spaces and Subspaces',
+      'Matrices & Systems of Linear Equations',
+      'Linear Transformations & Matrix Representations',
+      'Eigenvalues, Eigenvectors & Diagonalization',
+      'Orthogonality & Projections',
+      'Advanced Factorizations & SVD',
+    ];
+    if (linAlgSubj && topicsBySubj[linAlgSubj.id]) {
+      topicsBySubj[linAlgSubj.id].sort((a, b) => {
+        const aIdx = LA_SEQ.findIndex((kw) => a.title.toLowerCase().includes(kw.toLowerCase()));
+        const bIdx = LA_SEQ.findIndex((kw) => b.title.toLowerCase().includes(kw.toLowerCase()));
+        return (aIdx === -1 ? 99 : aIdx) - (bIdx === -1 ? 99 : bIdx);
+      });
+    }
+
+    const newItems: WorkItem[] = [...preservedItems];
+    const topicCursor: Record<number, number> = {};
+    subjects.forEach((s) => (topicCursor[s.id] = 0));
+
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    for (let d = 0; d < totalDays; d++) {
+      const curDt = new Date(startDt);
+      curDt.setDate(curDt.getDate() + d);
+      const curDateStr = curDt.toISOString().split('T')[0];
+      const dayName = dayNames[curDt.getDay()];
+
+      // Find active phase
+      const curPhase = phases.find((p) => p.start_date <= curDateStr && curDateStr <= p.end_date) || phases[0];
+      const phaseId = curPhase.id;
+
+      const daySlots = weeklySchedule[dayName] || [];
+      const dailyCapMinutes = dayName === 'Sunday' ? 180 : 360; // 3h on Sun, 6h on Mon-Sat
+      let allocatedMinutes = 0;
+
+      for (const slot of daySlots) {
+        if (allocatedMinutes >= dailyCapMinutes) break;
+
+        const subj = subjCodeMap.get(slot.subject_code);
+        if (!subj) continue;
+
+        const slotMinutes = Math.floor(slot.hours * 60);
+        const sTopics = topicsBySubj[subj.id] || [];
+        if (!sTopics.length) continue;
+
+        const blocks = Math.max(1, Math.floor(slotMinutes / 60));
+        const blockDuration = Math.floor(slotMinutes / blocks);
+
+        for (let b = 0; b < blocks; b++) {
+          const cIdx = topicCursor[subj.id] % sTopics.length;
+          const activeTopic = sTopics[cIdx];
+          topicCursor[subj.id]++;
+
+          let sessionType: WorkItem['session_type'] = 'Concept Learning';
+          if (dayName === 'Sunday') {
+            sessionType = b === 0 ? 'Spaced Revision' : b === 1 ? 'PYQ Practice' : 'Sectional Test';
+          } else if (phaseId === 1 && slot.subject_code === 'LIN_ALG') {
+            sessionType = b === 0 ? 'Concept Learning' : 'Mathematical Derivation';
+          } else if (phaseId === 4) {
+            sessionType = b % 2 === 0 ? 'PYQ Practice' : 'Mathematical Derivation';
+          } else {
+            sessionType = b === 0 ? 'Concept Learning' : b % 3 === 1 ? 'Mathematical Derivation' : 'PYQ Practice';
+          }
+
+          let title = `${activeTopic.title} (${sessionType})`;
+          if (slot.subject_code === 'LIN_ALG' && phaseId === 1) {
+            title = `[LA Foundation] ${activeTopic.title} — ${sessionType}`;
+          }
+
+          newItems.push({
+            id: `wi-${Date.now()}-${d}-${b}-${Math.random().toString(36).substring(2, 6)}`,
+            title,
+            subject_id: subj.id,
+            topic_id: activeTopic.id,
+            session_type: sessionType,
+            scheduled_date: curDateStr,
+            estimated_duration_minutes: blockDuration,
+            actual_duration_minutes: 0,
+            priority: activeTopic.priority,
+            status: 'Scheduled',
+            defer_count: 0,
+            subject_name: subj.name,
+            subject_color: subj.color,
+            topic_title: activeTopic.title,
+          });
+
+          allocatedMinutes += blockDuration;
+        }
+      }
+    }
+
+    // Add Final Exam Prep Mocks (Jan 16 to Feb 5, 2027) on Wednesdays (3) & Saturdays (6)
+    const finalStart = new Date('2027-01-16');
+    const examDate = new Date('2027-02-06');
+    let curFinal = new Date(finalStart);
+    let mockNum = 1;
+    const maxMocks = settings.mock_target_count || 10;
+
+    while (curFinal < examDate && mockNum <= maxMocks) {
+      const dayOfWeek = curFinal.getDay();
+      if (dayOfWeek === 3 || dayOfWeek === 6) {
+        // Wednesday or Saturday
+        const mockDateStr = curFinal.toISOString().split('T')[0];
+        newItems.push({
+          id: `mock-task-${mockNum}-test`,
+          title: `Full-Length GATE DA Mock #${mockNum} (Official Pattern)`,
+          subject_id: null,
+          topic_id: null,
+          session_type: 'Mock Test',
+          scheduled_date: mockDateStr,
+          estimated_duration_minutes: 180,
+          actual_duration_minutes: 0,
+          priority: 'High',
+          status: 'Scheduled',
+          defer_count: 0,
+          subject_name: 'Full-Length Simulation',
+          subject_color: '#EC4899',
+          topic_title: null,
+        });
+
+        newItems.push({
+          id: `mock-task-${mockNum}-analysis`,
+          title: `Mock #${mockNum} Deep Analysis & Mistake Vault Logging`,
+          subject_id: null,
+          topic_id: null,
+          session_type: 'Mock Analysis',
+          scheduled_date: mockDateStr,
+          estimated_duration_minutes: 120,
+          actual_duration_minutes: 0,
+          priority: 'High',
+          status: 'Scheduled',
+          defer_count: 0,
+          subject_name: 'Mock Test Analysis',
+          subject_color: '#F59E0B',
+          topic_title: null,
+        });
+
+        mockNum++;
+      }
+      curFinal.setDate(curFinal.getDate() + 1);
+    }
+
+    setLocal('gate_work_items', newItems);
+    return {
+      status: 'success',
+      message: `Generated ${newItems.length} study tasks aligned with 39h weekly schedule and 4 preparation phases.`,
+      created_count: newItems.length,
+    };
   },
 
-  reflowBacklog: async (_targetStartDate?: string) => {
-    const todayStr = new Date().toISOString().split('T')[0];
+  reflowBacklog: async (targetStartDate?: string) => {
+    initializeLocalStore();
+    const settings = getLocal<UserSettings>('gate_settings', {} as any);
+    const startStr = targetStartDate || new Date().toISOString().split('T')[0];
     const items = getLocal<WorkItem[]>('gate_work_items', []);
-    let reflowed = 0;
 
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].scheduled_date < todayStr && ['Scheduled', 'Deferred', 'In Progress'].includes(items[i].status)) {
-        const nextDt = new Date();
-        nextDt.setDate(nextDt.getDate() + Math.floor(reflowed / 2));
-        items[i].scheduled_date = nextDt.toISOString().split('T')[0];
-        items[i].defer_count += 1;
-        items[i].status = 'Scheduled';
+    const overdue = items.filter(
+      (i) => i.scheduled_date < startStr && ['Scheduled', 'Deferred', 'In Progress'].includes(i.status)
+    );
+
+    if (!overdue.length) {
+      return { status: 'success', message: 'No backlog tasks to reflow.', reflowed_count: 0, is_feasible: true };
+    }
+
+    const dayLoad: Record<string, number> = {};
+    items
+      .filter((i) => i.scheduled_date >= startStr && ['Scheduled', 'In Progress'].includes(i.status))
+      .forEach((i) => {
+        dayLoad[i.scheduled_date] = (dayLoad[i.scheduled_date] || 0) + i.estimated_duration_minutes;
+      });
+
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let reflowed = 0;
+    let dayOffset = 0;
+
+    for (const item of overdue) {
+      let placed = false;
+      while (!placed && dayOffset < 60) {
+        const candDt = new Date(startStr);
+        candDt.setDate(candDt.getDate() + dayOffset);
+        const candStr = candDt.toISOString().split('T')[0];
+        const dayName = dayNames[candDt.getDay()];
+        const cap = dayName === 'Sunday' ? 180 : 360; // 3h on Sun, 6h on Mon-Sat
+
+        const curMin = dayLoad[candStr] || 0;
+        if (curMin + item.estimated_duration_minutes <= cap) {
+          item.scheduled_date = candStr;
+          item.defer_count += 1;
+          item.status = 'Scheduled';
+          dayLoad[candStr] = curMin + item.estimated_duration_minutes;
+          reflowed++;
+          placed = true;
+        } else {
+          dayOffset++;
+        }
+      }
+      if (!placed) {
+        const candDt = new Date(startStr);
+        candDt.setDate(candDt.getDate() + dayOffset);
+        item.scheduled_date = candDt.toISOString().split('T')[0];
+        item.defer_count += 1;
+        item.status = 'Scheduled';
         reflowed++;
+        dayOffset++;
       }
     }
 
     setLocal('gate_work_items', items);
-    return { status: 'success', message: `Reflowed ${reflowed} backlog tasks.`, reflowed_count: reflowed };
+
+    const totalBacklogHours = Math.round(overdue.reduce((a, b) => a + b.estimated_duration_minutes, 0) / 60);
+    const targetDt = new Date(settings.syllabus_target_date || '2027-01-15');
+    const startDt = new Date(startStr);
+    const remainingDays = Math.max(1, Math.floor((targetDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24)));
+    const isFeasible = totalBacklogHours <= remainingDays * 6;
+
+    let warning = null;
+    if (!isFeasible) {
+      warning = `Workload alert: Backlog of ${totalBacklogHours} hours exceeds standard capacity for the ${remainingDays} days remaining until syllabus deadline (${settings.syllabus_target_date}).`;
+    }
+
+    return {
+      status: 'success',
+      message: `Reflowed ${reflowed} backlog tasks across upcoming available days without capacity overflow.`,
+      reflowed_count: reflowed,
+      is_feasible: isFeasible,
+      deficit_warning: warning,
+    };
   },
 
   // Sessions
@@ -1024,19 +1417,46 @@ export const localStore = {
     const topics = getLocal<Topic[]>('gate_topics', []);
     const sessions = getLocal<StudySession[]>('gate_sessions', []);
     const items = getLocal<WorkItem[]>('gate_work_items', []);
+    const mistakes = getLocal<MistakeLog[]>('gate_mistakes', []);
+    const mocks = getLocal<MockTest[]>('gate_mocks', []);
 
     const now = new Date();
-    const examDt = new Date('2027-02-06T09:30:00+05:30');
+    const todayStr = now.toISOString().split('T')[0];
+    const examDt = new Date(settings.exam_date || '2027-02-06T09:30:00+05:30');
     const diffMs = Math.max(0, examDt.getTime() - now.getTime());
     const daysRemaining = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
     const hoursRemaining = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60)));
 
+    // Deadline Intelligence
+    const syllabusDeadlineStr = settings.syllabus_target_date || '2027-01-15';
+    const syllabusDeadlineDt = new Date(syllabusDeadlineStr);
+    const daysToSyllabusDeadline = Math.max(0, Math.floor((syllabusDeadlineDt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+    const remainingWeeks = Math.max(0.1, daysToSyllabusDeadline / 7.0);
+
+    const phases: Array<{ id: number; name: string; start_date: string; end_date: string; objectives: string[] }> = JSON.parse(
+      settings.phases_json || DEFAULT_PHASES_JSON
+    );
+    const curPhase = phases.find((p) => p.start_date <= todayStr && todayStr <= p.end_date) || phases[0];
+    const nextMilestone = `${curPhase.name} Deadline: ${curPhase.end_date}`;
+
     const totalEst = topics.reduce((acc, t) => acc + t.estimated_hours, 0);
     const weightedSum = topics.reduce((acc, t) => acc + (t.completion_percentage / 100) * t.estimated_hours, 0);
     const progressPct = totalEst > 0 ? Math.round((weightedSum / totalEst) * 10000) / 100 : 0;
+    const remainingEstHours = Math.round(topics.reduce((acc, t) => acc + (1 - t.completion_percentage / 100) * t.estimated_hours, 0) * 10) / 10;
 
     const totalStudySec = sessions.reduce((acc, s) => acc + s.duration_seconds, 0);
     const totalStudyHours = Math.round((totalStudySec / 3600) * 10) / 10;
+
+    // Current week actual hours (Monday to Sunday)
+    const curDay = now.getDay();
+    const distToMon = (curDay + 6) % 7;
+    const monDt = new Date(now);
+    monDt.setDate(monDt.getDate() - distToMon);
+    const monStr = monDt.toISOString().split('T')[0];
+    const weekSec = sessions
+      .filter((s) => s.start_timestamp.slice(0, 10) >= monStr)
+      .reduce((acc, s) => acc + s.duration_seconds, 0);
+    const weeklyActualHours = Math.round((weekSec / 3600) * 10) / 10;
 
     const weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
@@ -1045,21 +1465,40 @@ export const localStore = {
       .reduce((acc, s) => acc + s.duration_seconds, 0);
     const sevenDayAvg = Math.round((recentSec / 3600 / 7) * 10) / 10;
 
-    const todayStr = now.toISOString().split('T')[0];
     const unfinished = items.filter((i) => i.scheduled_date < todayStr && ['Scheduled', 'Deferred', 'In Progress'].includes(i.status));
-
     const needsRevisionCount = topics.filter((t) => t.status === 'Needs Revision').length;
+    const overdueSrsTopics = topics.filter((t) => t.next_revision_date && t.next_revision_date < todayStr);
+
+    const pendingPyqs = topics.reduce((acc, t) => acc + Math.max(0, (t.pyqs_target || 20) - (t.pyqs_solved || 0)), 0);
+    const unresolvedMistakes = mistakes.filter((m) => !m.is_resolved).length;
+
+    const latestMock = mocks.length > 0 ? mocks[mocks.length - 1].marks_obtained : null;
+
+    const reqDailyHours = Math.round((remainingEstHours / Math.max(1, daysToSyllabusDeadline)) * 10) / 10;
+    const reqWeeklyHours = Math.round((remainingEstHours / remainingWeeks) * 10) / 10;
+
+    const weeklyTarget = settings.weekly_target_hours || 39.0;
+    const isBehind = reqWeeklyHours > weeklyTarget || (sevenDayAvg > 0 && sevenDayAvg < (settings.daily_target_hours || 6.0) - 1.5);
+
+    let deficitWarning: string | null = null;
+    if (reqWeeklyHours > weeklyTarget) {
+      deficitWarning = `Pace Alert: To complete all topics by January 15 (${daysToSyllabusDeadline} days left), you need ${reqWeeklyHours}h/week, exceeding your ${weeklyTarget}h weekly target. Prioritize foundational high-yield topics or reflow your backlog.`;
+    }
+
     const observations: string[] = [];
-    if (needsRevisionCount > 0) {
-      observations.push(`You have ${needsRevisionCount} topic(s) flagged for revision or with unresolved mistakes.`);
+    if (curPhase) {
+      observations.push(`Current Milestone: ${curPhase.name} (${curPhase.start_date} to ${curPhase.end_date}).`);
+    }
+    if (overdueSrsTopics.length > 0) {
+      observations.push(`You have ${overdueSrsTopics.length} topic(s) overdue for spaced repetition revision.`);
     }
     if (unfinished.length > 0) {
       observations.push(`You have ${unfinished.length} unfinished backlog activity(ies) from previous days.`);
     }
-    if (totalStudyHours > 0 && sevenDayAvg < (settings.daily_target_hours || 4)) {
-      observations.push(`Your 7-day average (${sevenDayAvg}h/day) is below your target run-rate (${settings.daily_target_hours}h/day).`);
+    if (deficitWarning) {
+      observations.push(deficitWarning);
     } else {
-      observations.push('Keep your daily focus blocks consistent to hit your January 15 syllabus milestone!');
+      observations.push('Maintain your 6h Monday–Saturday and 3h Sunday schedule to reach the January 15 milestone!');
     }
 
     return {
@@ -1069,6 +1508,11 @@ export const localStore = {
         days_remaining: daysRemaining,
         hours_remaining: hoursRemaining,
         today_date: todayStr,
+        prep_start_date: settings.prep_start_date || '2026-11-02',
+        syllabus_target_date: syllabusDeadlineStr,
+        days_to_syllabus_deadline: daysToSyllabusDeadline,
+        current_phase: curPhase,
+        next_milestone: nextMilestone,
       },
       kpis: {
         weighted_syllabus_completion_pct: progressPct,
@@ -1081,10 +1525,20 @@ export const localStore = {
         total_actual_study_hours: totalStudyHours,
         total_planned_hours: Math.round(items.reduce((acc, i) => acc + i.estimated_duration_minutes, 0) / 60 * 10) / 10,
         seven_day_avg_daily_hours: sevenDayAvg,
-        required_daily_runrate_hours: Math.round((Math.max(0, totalEst - totalStudyHours) / daysRemaining) * 10) / 10,
-        target_daily_hours: settings.daily_target_hours || 4,
+        weekly_actual_hours: weeklyActualHours,
+        weekly_target_hours: weeklyTarget,
+        remaining_estimated_hours: remainingEstHours,
+        required_daily_runrate_hours: reqDailyHours,
+        required_weekly_runrate_hours: reqWeeklyHours,
+        target_daily_hours: settings.daily_target_hours || 6.0,
         current_streak_days: totalStudyHours > 0 ? 1 : 0,
         unfinished_count: unfinished.length,
+        overdue_srs_count: overdueSrsTopics.length,
+        pending_pyqs_count: pendingPyqs,
+        unresolved_mistakes_count: unresolvedMistakes,
+        latest_mock_score: latestMock,
+        is_behind_schedule: isBehind,
+        deficit_warning: deficitWarning,
       },
       observations,
     };
