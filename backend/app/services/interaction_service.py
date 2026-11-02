@@ -20,19 +20,13 @@ def check_existing_checkin(session: Session, interaction_type: str, date_str: st
 
 def get_morning_checkin_context(session: Session, today_str: Optional[str] = None) -> Dict[str, Any]:
     if not today_str:
-        today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        today_str = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d")
         
     today_dt = datetime.strptime(today_str, "%Y-%m-%d")
     yesterday_str = (today_dt - timedelta(days=1)).strftime("%Y-%m-%d")
     
     # 1. Check idempotency
     existing = check_existing_checkin(session, "morning_checkin", today_str)
-    if existing:
-        return {
-            "already_completed": True,
-            "interaction_date": today_str,
-            "message": "Morning check-in already completed for today."
-        }
         
     # 2. Retrieve yesterday's activities and actual duration
     yesterday_items = session.exec(
@@ -62,7 +56,8 @@ def get_morning_checkin_context(session: Session, today_str: Optional[str] = Non
     ).all())
     
     return {
-        "already_completed": False,
+        "already_completed": bool(existing),
+        "existing_answers": json.loads(existing.metadata_json) if existing and existing.metadata_json else None,
         "interaction_date": today_str,
         "yesterday_date": yesterday_str,
         "yesterday_planned_count": len(yesterday_items),
@@ -112,10 +107,13 @@ def get_morning_checkin_context(session: Session, today_str: Optional[str] = Non
 
 def process_morning_checkin(
     session: Session,
-    today_str: str,
+    today_str: Optional[str],
     answers: Dict[str, Any]
 ) -> Dict[str, Any]:
     """Processes user answers and updates tasks and schedule accordingly."""
+    if not today_str:
+        today_str = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d")
+
     q1 = answers.get("q1_yesterday_completion") # all, partial, none
     q2 = answers.get("q2_today_availability")   # full, limited, none
     q3 = answers.get("q3_readiness")            # normal, lighter, challenging
@@ -166,36 +164,37 @@ def process_morning_checkin(
                 item.defer_count += 1
                 session.add(item)
                 
-    # Record interaction
-    record = InteractionRecord(
-        interaction_type="morning_checkin",
-        interaction_date=today_str,
-        current_question="Morning Check-in (Yesterday Completion & Today Availability)",
-        selected_answer=f"q1:{q1}|q2:{q2}|q3:{q3}",
-        metadata_json=json.dumps(answers),
-        status="completed",
-        completed_at_utc=datetime.now(timezone.utc).isoformat()
-    )
+    # Record or update interaction
+    existing = check_existing_checkin(session, "morning_checkin", today_str)
+    if existing:
+        record = existing
+        record.selected_answer = f"q1:{q1}|q2:{q2}|q3:{q3}"
+        record.metadata_json = json.dumps(answers)
+        record.completed_at_utc = datetime.now(timezone.utc).isoformat()
+    else:
+        record = InteractionRecord(
+            interaction_type="morning_checkin",
+            interaction_date=today_str,
+            current_question="Morning Check-in (Yesterday Completion & Today Availability)",
+            selected_answer=f"q1:{q1}|q2:{q2}|q3:{q3}",
+            metadata_json=json.dumps(answers),
+            status="completed",
+            completed_at_utc=datetime.now(timezone.utc).isoformat()
+        )
     session.add(record)
     session.commit()
     
     return {
         "status": "success",
-        "message": "Morning check-in completed. Preparation queue updated.",
+        "message": "Morning check-in confirmed! Preparation queue and streak updated.",
         "interaction_id": record.id
     }
 
 def get_evening_review_context(session: Session, today_str: Optional[str] = None) -> Dict[str, Any]:
     if not today_str:
-        today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        today_str = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d")
         
     existing = check_existing_checkin(session, "evening_review", today_str)
-    if existing:
-        return {
-            "already_completed": True,
-            "interaction_date": today_str,
-            "message": "Evening review already completed for today."
-        }
         
     today_items = session.exec(
         select(WorkItem).where(WorkItem.scheduled_date == today_str)
@@ -207,7 +206,8 @@ def get_evening_review_context(session: Session, today_str: Optional[str] = None
     today_logged_hours = round(sum(s.duration_seconds for s in today_sessions) / 3600.0, 1)
     
     return {
-        "already_completed": False,
+        "already_completed": bool(existing),
+        "existing_answers": json.loads(existing.metadata_json) if existing and existing.metadata_json else None,
         "interaction_date": today_str,
         "today_planned_count": len(today_items),
         "today_completed_count": sum(1 for i in today_items if i.status == "Completed"),
@@ -246,19 +246,47 @@ def get_evening_review_context(session: Session, today_str: Optional[str] = None
         ]
     }
 
-def process_evening_review(session: Session, today_str: str, answers: Dict[str, Any]) -> Dict[str, Any]:
-    record = InteractionRecord(
-        interaction_type="evening_review",
-        interaction_date=today_str,
-        current_question="Evening Review",
-        selected_answer=f"q1:{answers.get('q1_today_status')}|q2:{answers.get('q2_rating')}|q3:{answers.get('q3_comfort')}",
-        metadata_json=json.dumps(answers),
-        status="completed",
-        completed_at_utc=datetime.now(timezone.utc).isoformat()
-    )
+def process_evening_review(session: Session, today_str: Optional[str], answers: Dict[str, Any]) -> Dict[str, Any]:
+    if not today_str:
+        today_str = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d")
+
+    q1 = answers.get("q1_today_status")
+    q2 = answers.get("q2_rating")
+    q3 = answers.get("q3_comfort")
+
+    # If partial or none or lighter, defer pending tasks to tomorrow
+    if q1 in ["partial", "none"] or q3 == "lighter":
+        today_dt = datetime.strptime(today_str, "%Y-%m-%d")
+        tomorrow_str = (today_dt + timedelta(days=1)).strftime("%Y-%m-%d")
+        incomplete_items = session.exec(
+            select(WorkItem)
+            .where(WorkItem.scheduled_date == today_str)
+            .where(WorkItem.status.in_(["Scheduled", "In Progress"]))
+        ).all()
+        for it in incomplete_items:
+            it.scheduled_date = tomorrow_str
+            it.defer_count += 1
+            session.add(it)
+
+    existing = check_existing_checkin(session, "evening_review", today_str)
+    if existing:
+        record = existing
+        record.selected_answer = f"q1:{q1}|q2:{q2}|q3:{q3}"
+        record.metadata_json = json.dumps(answers)
+        record.completed_at_utc = datetime.now(timezone.utc).isoformat()
+    else:
+        record = InteractionRecord(
+            interaction_type="evening_review",
+            interaction_date=today_str,
+            current_question="Evening Review",
+            selected_answer=f"q1:{q1}|q2:{q2}|q3:{q3}",
+            metadata_json=json.dumps(answers),
+            status="completed",
+            completed_at_utc=datetime.now(timezone.utc).isoformat()
+        )
     session.add(record)
     session.commit()
-    return {"status": "success", "message": "Evening review saved successfully."}
+    return {"status": "success", "message": "Evening review saved successfully. Streak and daily reflections logged."}
 
 def process_task_completion_feedback(
     session: Session,

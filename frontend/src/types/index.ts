@@ -281,6 +281,8 @@ export interface DashboardKPIs {
     latest_mock_score?: number | null;
     is_behind_schedule?: boolean;
     deficit_warning?: string | null;
+    morning_checkin_done?: boolean;
+    evening_review_done?: boolean;
   };
   observations: string[];
 }

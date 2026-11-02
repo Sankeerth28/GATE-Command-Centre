@@ -18,6 +18,8 @@ import {
   Clock,
   ShieldAlert,
   GraduationCap,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 interface Props {
@@ -60,6 +62,11 @@ export const DashboardPage: React.FC<Props> = ({
 
   useEffect(() => {
     loadDashboard();
+    const handleRefresh = () => {
+      loadDashboard();
+    };
+    window.addEventListener('gate-refresh', handleRefresh);
+    return () => window.removeEventListener('gate-refresh', handleRefresh);
   }, []);
 
   const handleStartTask = (item: WorkItem) => {
@@ -195,17 +202,40 @@ export const DashboardPage: React.FC<Props> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Morning Check-in Action */}
             <button
               onClick={() => onOpenAssistant('morning_checkin')}
-              className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold shadow-glow-primary transition-all flex items-center gap-2 hover:scale-[1.02]"
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 ${
+                kpis?.morning_checkin_done
+                  ? 'bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300'
+                  : 'bg-primary hover:bg-primary-hover text-white shadow-glow-primary hover:scale-[1.02]'
+              }`}
+              title="Daily Morning Check-in: assess yesterday and calibrate today's schedule"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Daily Check-in</span>
+              <Sun className={`w-4 h-4 ${kpis?.morning_checkin_done ? 'text-emerald-400' : 'text-amber-300'}`} />
+              <span>{kpis?.morning_checkin_done ? 'Morning Check-in ✓' : 'Morning Check-in'}</span>
             </button>
+
+            {/* Evening Review Action */}
+            <button
+              onClick={() => onOpenAssistant('evening_review')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 ${
+                kpis?.evening_review_done
+                  ? 'bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-300'
+                  : kpis?.morning_checkin_done
+                  ? 'bg-secondary hover:bg-secondary-hover text-white shadow-glow-secondary hover:scale-[1.02]'
+                  : 'bg-surface-card hover:bg-surface-hover border border-border text-slate-200'
+              }`}
+              title="Evening Accountability Review: log completed hours and reflow remaining tasks"
+            >
+              <Moon className={`w-4 h-4 ${kpis?.evening_review_done ? 'text-purple-400' : 'text-secondary'}`} />
+              <span>{kpis?.evening_review_done ? 'Evening Review ✓' : 'Evening Review'}</span>
+            </button>
+
             <button
               onClick={onNavigateToPlanner}
-              className="px-4 py-2.5 rounded-xl bg-surface-card hover:bg-surface-hover border border-border text-xs font-medium text-slate-200 transition-all"
+              className="px-3.5 py-2.5 rounded-xl bg-surface-card hover:bg-surface-hover border border-border text-xs font-medium text-slate-200 transition-all"
             >
               Open Planner
             </button>
@@ -291,14 +321,21 @@ export const DashboardPage: React.FC<Props> = ({
 
         {/* KPI 6: Study Streak */}
         <div className="glass-panel p-4 rounded-xl space-y-1">
-          <div className="text-[11px] font-medium text-muted uppercase tracking-wider">
-            Execution Streak
+          <div className="text-[11px] font-medium text-muted uppercase tracking-wider flex items-center justify-between">
+            <span>Execution Streak</span>
+            {(kpis?.current_streak_days || 0) > 0 && (
+              <span className="text-[10px] text-amber-400 font-mono font-medium">Active</span>
+            )}
           </div>
           <div className="text-2xl font-bold font-mono text-amber-400 flex items-center gap-1.5">
-            <Flame className="w-5 h-5 fill-current" />
+            <Flame className="w-5 h-5 fill-current text-amber-400" />
             <span>{kpis?.current_streak_days || 0}d</span>
           </div>
-          <p className="text-[10px] text-muted-light">Daily study consistency</p>
+          <p className="text-[10px] text-muted-light">
+            {(kpis?.current_streak_days || 0) > 0
+              ? `${kpis?.current_streak_days} consecutive day(s) active`
+              : 'Complete today\'s task to start streak'}
+          </p>
         </div>
       </div>
 

@@ -116,7 +116,7 @@ export function AppContent() {
         initialMode={assistantMode}
         taskCompletionMeta={completionMeta}
         onSuccessRefresh={() => {
-          // Trigger refresh if needed
+          window.dispatchEvent(new CustomEvent('gate-refresh'));
         }}
       />
 

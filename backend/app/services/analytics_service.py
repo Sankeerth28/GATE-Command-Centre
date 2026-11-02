@@ -4,7 +4,7 @@ from typing import Dict, Any, List
 from sqlmodel import Session, select
 from app.models.models import (
     Topic, Subject, StudySession, WorkItem, MockTest, MockSubjectResult,
-    MistakeLog, UserSettings, DEFAULT_PHASES_JSON
+    MistakeLog, InteractionRecord, UserSettings, DEFAULT_PHASES_JSON
 )
 
 KOLKATA_OFFSET = timedelta(hours=5, minutes=30)
@@ -106,19 +106,62 @@ def get_dashboard_kpis(session: Session) -> Dict[str, Any]:
     ).first()
     latest_mock_score = latest_mock.marks_obtained if latest_mock else None
     
-    # 8. Streak calculation
-    session_dates = {s.start_timestamp[:10] for s in sessions if s.start_timestamp}
+    # 8. Streak calculation across all preparation modalities
+    active_dates = set()
+    for s in sessions:
+        if s.start_timestamp and s.duration_seconds > 0:
+            active_dates.add(s.start_timestamp[:10])
+
+    completed_items = session.exec(
+        select(WorkItem).where(WorkItem.status == "Completed")
+    ).all()
+    for item in completed_items:
+        d = (item.completion_timestamp or item.scheduled_date or "")[:10]
+        if d:
+            active_dates.add(d)
+
+    interactions = session.exec(select(InteractionRecord)).all()
+    for inter in interactions:
+        if inter.interaction_date:
+            active_dates.add(inter.interaction_date[:10])
+
+    mocks = session.exec(select(MockTest)).all()
+    for m in mocks:
+        if m.test_date:
+            active_dates.add(m.test_date[:10])
+
+    for t in topics:
+        if t.last_studied_date:
+            active_dates.add(t.last_studied_date[:10])
+        if t.last_revised_date:
+            active_dates.add(t.last_revised_date[:10])
+
     streak = 0
-    check_day = today_dt
-    if today_str not in session_dates:
+    yesterday_str = (today_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+    if today_str in active_dates:
+        check_day = today_dt
+    elif yesterday_str in active_dates:
         check_day = today_dt - timedelta(days=1)
-    while True:
-        c_str = check_day.strftime("%Y-%m-%d")
-        if c_str in session_dates:
-            streak += 1
-            check_day -= timedelta(days=1)
-        else:
-            break
+    else:
+        check_day = None
+
+    if check_day:
+        while True:
+            c_str = check_day.strftime("%Y-%m-%d")
+            if c_str in active_dates:
+                streak += 1
+                check_day -= timedelta(days=1)
+            else:
+                break
+
+    morning_checkin_done = any(
+        i.interaction_type == "morning_checkin" and i.interaction_date == today_str
+        for i in interactions
+    )
+    evening_review_done = any(
+        i.interaction_type == "evening_review" and i.interaction_date == today_str
+        for i in interactions
+    )
             
     # 9. Backlog items
     unfinished_items = session.exec(
@@ -191,7 +234,9 @@ def get_dashboard_kpis(session: Session) -> Dict[str, Any]:
             "unresolved_mistakes_count": unresolved_mistakes_count,
             "latest_mock_score": latest_mock_score,
             "is_behind_schedule": is_behind_schedule,
-            "deficit_warning": deficit_warning
+            "deficit_warning": deficit_warning,
+            "morning_checkin_done": morning_checkin_done,
+            "evening_review_done": evening_review_done
         },
         "observations": observations
     }

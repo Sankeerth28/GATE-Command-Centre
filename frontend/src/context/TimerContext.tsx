@@ -182,6 +182,9 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     if (finalSeconds > 30) {
       await api.createStudySession(payload);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('gate-refresh'));
+      }
     }
 
     const returnMeta = {

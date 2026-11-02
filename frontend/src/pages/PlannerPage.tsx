@@ -50,6 +50,11 @@ export const PlannerPage: React.FC = () => {
 
   useEffect(() => {
     loadData();
+    const handleRefresh = () => {
+      loadData();
+    };
+    window.addEventListener('gate-refresh', handleRefresh);
+    return () => window.removeEventListener('gate-refresh', handleRefresh);
   }, []);
 
   const handleGeneratePlan = async () => {

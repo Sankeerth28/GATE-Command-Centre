@@ -156,6 +156,95 @@ function setLocal<T>(key: string, value: T): void {
   }
 }
 
+export function getIstDateString(d: Date = new Date()): string {
+  try {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(d);
+  } catch {
+    return d.toISOString().split('T')[0];
+  }
+}
+
+export function getYesterdayIstDateString(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() - 1);
+  return dt.toISOString().split('T')[0];
+}
+
+export function getTomorrowIstDateString(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + 1);
+  return dt.toISOString().split('T')[0];
+}
+
+export function calculateActiveStreak(
+  sessions: StudySession[],
+  workItems: WorkItem[],
+  interactions: any[],
+  mocks: MockTest[],
+  topics: Topic[],
+  todayStr: string
+): number {
+  const activeDates = new Set<string>();
+
+  // 1. Sessions with actual study time
+  for (const s of sessions) {
+    if (s.duration_seconds > 0 && s.start_timestamp) {
+      activeDates.add(s.start_timestamp.slice(0, 10));
+    }
+  }
+
+  // 2. Completed tasks
+  for (const w of workItems) {
+    if (w.status === 'Completed') {
+      const compDate = (w.completion_timestamp || w.scheduled_date || '').slice(0, 10);
+      if (compDate) activeDates.add(compDate);
+    }
+  }
+
+  // 3. Daily Interactions (morning checkin, evening review)
+  for (const inter of interactions) {
+    if (inter.interaction_date) {
+      activeDates.add(inter.interaction_date.slice(0, 10));
+    }
+  }
+
+  // 4. Completed Mocks
+  for (const m of mocks) {
+    if (m.test_date) {
+      activeDates.add(m.test_date.slice(0, 10));
+    }
+  }
+
+  // 5. Studied or revised topics
+  for (const t of topics) {
+    if (t.last_studied_date) activeDates.add(t.last_studied_date.slice(0, 10));
+    if (t.last_revised_date) activeDates.add(t.last_revised_date.slice(0, 10));
+  }
+
+  if (activeDates.size === 0) return 0;
+
+  const yesterdayStr = getYesterdayIstDateString(todayStr);
+
+  let checkStr = '';
+  if (activeDates.has(todayStr)) {
+    checkStr = todayStr;
+  } else if (activeDates.has(yesterdayStr)) {
+    checkStr = yesterdayStr;
+  } else {
+    return 0;
+  }
+
+  let streak = 0;
+  while (activeDates.has(checkStr)) {
+    streak++;
+    checkStr = getYesterdayIstDateString(checkStr);
+  }
+
+  return streak;
+}
+
 // Initialize default data if not present
 function initializeLocalStore() {
   const existingSettings = getLocal<UserSettings | null>('gate_settings', null);
@@ -1029,60 +1118,145 @@ export const localStore = {
   // Interactions
   getMorningCheckin: async (date?: string) => {
     initializeLocalStore();
-    const todayStr = date || new Date().toISOString().split('T')[0];
+    const todayStr = date || getIstDateString();
+    const yesterdayStr = getYesterdayIstDateString(todayStr);
+
     const items = getLocal<WorkItem[]>('gate_work_items', []);
     const sessions = getLocal<StudySession[]>('gate_sessions', []);
+    const interactions = getLocal<any[]>('gate_interactions', []);
 
-    const yesterdayDt = new Date();
-    yesterdayDt.setDate(yesterdayDt.getDate() - 1);
-    const yesterdayStr = yesterdayDt.toISOString().split('T')[0];
+    const existingCheckin = interactions.find(
+      (i) => i.interaction_type === 'morning_checkin' && i.interaction_date === todayStr
+    );
 
     const yesterdayItems = items.filter((i) => i.scheduled_date === yesterdayStr);
     const yesterdayLogged = sessions
-      .filter((s) => s.start_timestamp.startsWith(yesterdayStr))
+      .filter((s) => s.start_timestamp && s.start_timestamp.startsWith(yesterdayStr))
       .reduce((acc, s) => acc + s.duration_seconds, 0);
 
     const todayItems = items.filter((i) => i.scheduled_date === todayStr);
+    const overdueItems = items.filter(
+      (i) => i.scheduled_date < todayStr && ['Scheduled', 'Deferred', 'In Progress'].includes(i.status)
+    );
 
     return {
-      already_completed: false,
+      already_completed: !!existingCheckin,
+      existing_answers: existingCheckin?.answers || null,
       interaction_date: todayStr,
       yesterday_date: yesterdayStr,
       yesterday_planned_count: yesterdayItems.length,
       yesterday_completed_count: yesterdayItems.filter((i) => i.status === 'Completed').length,
       yesterday_logged_hours: Math.round((yesterdayLogged / 3600) * 10) / 10,
       today_planned_count: todayItems.length,
-      today_estimated_hours: Math.round(todayItems.reduce((acc, i) => acc + i.estimated_duration_minutes, 0) / 60 * 10) / 10,
+      today_estimated_hours: Math.round(
+        todayItems.reduce((acc, i) => acc + i.estimated_duration_minutes, 0) / 60 * 10
+      ) / 10,
       today_items: todayItems,
+      overdue_count: overdueItems.length,
     };
   },
 
   submitMorningCheckin: async (date: string, answers: any) => {
+    const todayStr = date || getIstDateString();
+    const yesterdayStr = getYesterdayIstDateString(todayStr);
     const interactions = getLocal<any[]>('gate_interactions', []);
-    interactions.push({
-      id: `int-${Date.now()}`,
+    const items = getLocal<WorkItem[]>('gate_work_items', []);
+
+    // 1. Process yesterday items based on q1_yesterday_completion
+    const q1 = answers?.q1_yesterday_completion; // 'all' | 'partial' | 'none'
+    const incompleteIds = answers?.incomplete_item_ids || [];
+
+    if (q1 === 'all') {
+      items.forEach((item) => {
+        if (item.scheduled_date === yesterdayStr && item.status !== 'Completed') {
+          item.status = 'Completed';
+          item.completion_timestamp = new Date().toISOString();
+        }
+      });
+    } else if (q1 === 'partial') {
+      items.forEach((item) => {
+        if (item.scheduled_date === yesterdayStr) {
+          if (incompleteIds.includes(item.id)) {
+            item.status = 'Deferred';
+            item.defer_count = (item.defer_count || 0) + 1;
+          } else if (item.status !== 'Completed') {
+            item.status = 'Completed';
+            item.completion_timestamp = new Date().toISOString();
+          }
+        }
+      });
+    } else if (q1 === 'none') {
+      items.forEach((item) => {
+        if (item.scheduled_date === yesterdayStr && item.status !== 'Completed') {
+          item.status = 'Deferred';
+          item.defer_count = (item.defer_count || 0) + 1;
+        }
+      });
+    }
+
+    // 2. Process today's workload adjustment based on q2_today_availability and q3_readiness
+    const q2 = answers?.q2_today_availability; // 'full' | 'limited' | 'none'
+    const q3 = answers?.q3_readiness;          // 'normal' | 'lighter' | 'challenging'
+
+    if (q2 === 'limited' || q3 === 'lighter') {
+      const todayScheduled = items.filter((i) => i.scheduled_date === todayStr && i.status === 'Scheduled');
+      if (todayScheduled.length > 2) {
+        const tomorrowStr = getTomorrowIstDateString(todayStr);
+        const itemsToDefer = todayScheduled.filter((i) => i.priority !== 'High').slice(0, 2);
+        itemsToDefer.forEach((it) => {
+          it.scheduled_date = tomorrowStr;
+          it.defer_count = (it.defer_count || 0) + 1;
+        });
+      }
+    }
+
+    setLocal('gate_work_items', items);
+
+    // 3. Upsert interaction record
+    const existingIdx = interactions.findIndex(
+      (i) => i.interaction_type === 'morning_checkin' && i.interaction_date === todayStr
+    );
+    const newRecord = {
+      id: existingIdx >= 0 ? interactions[existingIdx].id : `int-${Date.now()}`,
       interaction_type: 'morning_checkin',
-      interaction_date: date,
+      interaction_date: todayStr,
       answers,
-      created_at_utc: new Date().toISOString(),
-    });
+      created_at_utc: existingIdx >= 0 ? interactions[existingIdx].created_at_utc : new Date().toISOString(),
+      updated_at_utc: new Date().toISOString(),
+    };
+
+    if (existingIdx >= 0) {
+      interactions[existingIdx] = newRecord;
+    } else {
+      interactions.push(newRecord);
+    }
     setLocal('gate_interactions', interactions);
-    return { status: 'success', message: 'Morning check-in confirmed.' };
+
+    return {
+      status: 'success',
+      message: 'Morning check-in confirmed! Today\'s schedule and streak updated.',
+    };
   },
 
   getEveningReview: async (date?: string) => {
     initializeLocalStore();
-    const todayStr = date || new Date().toISOString().split('T')[0];
+    const todayStr = date || getIstDateString();
     const items = getLocal<WorkItem[]>('gate_work_items', []);
     const sessions = getLocal<StudySession[]>('gate_sessions', []);
+    const interactions = getLocal<any[]>('gate_interactions', []);
+
+    const existingReview = interactions.find(
+      (i) => i.interaction_type === 'evening_review' && i.interaction_date === todayStr
+    );
 
     const todayItems = items.filter((i) => i.scheduled_date === todayStr);
     const todaySeconds = sessions
-      .filter((s) => s.start_timestamp.startsWith(todayStr))
+      .filter((s) => s.start_timestamp && s.start_timestamp.startsWith(todayStr))
       .reduce((acc, s) => acc + s.duration_seconds, 0);
 
     return {
-      already_completed: false,
+      already_completed: !!existingReview,
+      existing_answers: existingReview?.answers || null,
       interaction_date: todayStr,
       today_items_count: todayItems.length,
       today_completed_count: todayItems.filter((i) => i.status === 'Completed').length,
@@ -1092,20 +1266,53 @@ export const localStore = {
   },
 
   submitEveningReview: async (date: string, answers: any) => {
+    const todayStr = date || getIstDateString();
     const interactions = getLocal<any[]>('gate_interactions', []);
-    interactions.push({
-      id: `int-${Date.now()}`,
-      interaction_type: 'evening_review',
-      interaction_date: date,
-      answers,
-      created_at_utc: new Date().toISOString(),
-    });
-    setLocal('gate_interactions', interactions);
+    const items = getLocal<WorkItem[]>('gate_work_items', []);
+
+    // 1. If user indicates unfinished tasks or need lighter day tomorrow
+    const q1 = answers?.q1_today_status; // 'all' | 'mostly' | 'partial' | 'none'
+    const q3 = answers?.q3_comfort;      // 'ready' | 'lighter' | 'challenging'
+
+    if (q1 === 'partial' || q1 === 'none' || q3 === 'lighter') {
+      const tomorrowStr = getTomorrowIstDateString(todayStr);
+      items.forEach((it) => {
+        if (it.scheduled_date === todayStr && it.status !== 'Completed') {
+          it.scheduled_date = tomorrowStr;
+          it.defer_count = (it.defer_count || 0) + 1;
+        }
+      });
+      setLocal('gate_work_items', items);
+    }
 
     if (answers?.reflow_missed) {
       await localStore.reflowBacklog();
     }
-    return { status: 'success', message: 'Evening review saved successfully.' };
+
+    // 2. Upsert interaction
+    const existingIdx = interactions.findIndex(
+      (i) => i.interaction_type === 'evening_review' && i.interaction_date === todayStr
+    );
+    const newRecord = {
+      id: existingIdx >= 0 ? interactions[existingIdx].id : `int-${Date.now()}`,
+      interaction_type: 'evening_review',
+      interaction_date: todayStr,
+      answers,
+      created_at_utc: existingIdx >= 0 ? interactions[existingIdx].created_at_utc : new Date().toISOString(),
+      updated_at_utc: new Date().toISOString(),
+    };
+
+    if (existingIdx >= 0) {
+      interactions[existingIdx] = newRecord;
+    } else {
+      interactions.push(newRecord);
+    }
+    setLocal('gate_interactions', interactions);
+
+    return {
+      status: 'success',
+      message: 'Evening accountability review saved! Streak and daily reflections logged.',
+    };
   },
 
   submitTaskCompletion: async (payload: {
@@ -1419,9 +1626,10 @@ export const localStore = {
     const items = getLocal<WorkItem[]>('gate_work_items', []);
     const mistakes = getLocal<MistakeLog[]>('gate_mistakes', []);
     const mocks = getLocal<MockTest[]>('gate_mocks', []);
+    const interactions = getLocal<any[]>('gate_interactions', []);
 
     const now = new Date();
-    const todayStr = now.toISOString().split('T')[0];
+    const todayStr = getIstDateString(now);
     const examDt = new Date(settings.exam_date || '2027-02-06T09:30:00+05:30');
     const diffMs = Math.max(0, examDt.getTime() - now.getTime());
     const daysRemaining = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
@@ -1531,7 +1739,7 @@ export const localStore = {
         required_daily_runrate_hours: reqDailyHours,
         required_weekly_runrate_hours: reqWeeklyHours,
         target_daily_hours: settings.daily_target_hours || 6.0,
-        current_streak_days: totalStudyHours > 0 ? 1 : 0,
+        current_streak_days: calculateActiveStreak(sessions, items, interactions, mocks, topics, todayStr),
         unfinished_count: unfinished.length,
         overdue_srs_count: overdueSrsTopics.length,
         pending_pyqs_count: pendingPyqs,
@@ -1539,6 +1747,12 @@ export const localStore = {
         latest_mock_score: latestMock,
         is_behind_schedule: isBehind,
         deficit_warning: deficitWarning,
+        morning_checkin_done: interactions.some(
+          (i) => i.interaction_type === 'morning_checkin' && i.interaction_date === todayStr
+        ),
+        evening_review_done: interactions.some(
+          (i) => i.interaction_type === 'evening_review' && i.interaction_date === todayStr
+        ),
       },
       observations,
     };

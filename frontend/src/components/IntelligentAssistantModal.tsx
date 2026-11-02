@@ -161,12 +161,54 @@ export const IntelligentAssistantModal: React.FC<Props> = ({
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-md text-muted hover:text-white hover:bg-surface-hover transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            {(mode === 'morning_checkin' || mode === 'evening_review') && (
+              <div className="flex items-center bg-surface-subtle p-0.5 rounded-lg border border-border text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('morning_checkin');
+                    setStep(1);
+                    setAnswers({});
+                    setSubmitted(false);
+                    setResultMessage('');
+                    loadContext('morning_checkin');
+                  }}
+                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
+                    mode === 'morning_checkin'
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'text-muted hover:text-white'
+                  }`}
+                >
+                  Morning
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('evening_review');
+                    setStep(1);
+                    setAnswers({});
+                    setSubmitted(false);
+                    setResultMessage('');
+                    loadContext('evening_review');
+                  }}
+                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
+                    mode === 'evening_review'
+                      ? 'bg-secondary text-white shadow-sm'
+                      : 'text-muted hover:text-white'
+                  }`}
+                >
+                  Evening
+                </button>
+              </div>
+            )}
+            <button
+              onClick={onClose}
+              className="p-1 rounded-md text-muted hover:text-white hover:bg-surface-hover transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Content Body */}
@@ -197,19 +239,65 @@ export const IntelligentAssistantModal: React.FC<Props> = ({
               {mode === 'morning_checkin' && (
                 <div className="space-y-5">
                   {data?.already_completed ? (
-                    <div className="py-6 text-center space-y-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/20 text-primary-light mx-auto flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5" />
+                    <div className="py-6 text-center space-y-4">
+                      <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 mx-auto flex items-center justify-center">
+                        <CheckCircle className="w-6 h-6" />
                       </div>
-                      <p className="text-xs text-slate-300">
-                        You have already completed today&apos;s morning check-in.
-                      </p>
-                      <button
-                        onClick={onClose}
-                        className="px-4 py-2 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs text-slate-200"
-                      >
-                        Close
-                      </button>
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-white text-base">Morning Check-in Already Completed</h4>
+                        <p className="text-xs text-slate-300 max-w-xs mx-auto">
+                          Today&apos;s schedule is active. You can update your answers or proceed to your Evening Review.
+                        </p>
+                      </div>
+
+                      <div className="bg-surface-card p-3 rounded-lg border border-border text-xs space-y-1.5 text-left max-w-xs mx-auto">
+                        <div className="flex justify-between text-muted">
+                          <span>Today Planned Tasks:</span>
+                          <span className="text-secondary font-medium">
+                            {data?.today_planned_count ?? data?.today_items?.length ?? 0} activities
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-muted">
+                          <span>Estimated Hours:</span>
+                          <span className="text-white font-medium">
+                            {data?.today_estimated_hours ?? 0}h
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setData((prev: any) => ({ ...prev, already_completed: false }));
+                            setStep(1);
+                          }}
+                          className="px-3.5 py-2 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs font-medium text-slate-200 transition-all"
+                        >
+                          Redo / Update Check-in
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMode('evening_review');
+                            setStep(1);
+                            setAnswers({});
+                            setSubmitted(false);
+                            setResultMessage('');
+                            loadContext('evening_review');
+                          }}
+                          className="px-3.5 py-2 rounded-lg bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold shadow-glow-secondary transition-all"
+                        >
+                          Open Evening Review
+                        </button>
+                        <button
+                          type="button"
+                          onClick={onClose}
+                          className="px-3.5 py-2 rounded-lg bg-surface hover:bg-surface-hover border border-border text-xs text-muted hover:text-white transition-all"
+                        >
+                          Close
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <>
@@ -338,19 +426,50 @@ export const IntelligentAssistantModal: React.FC<Props> = ({
               {mode === 'evening_review' && (
                 <div className="space-y-4">
                   {data?.already_completed ? (
-                    <div className="py-6 text-center space-y-3">
-                      <div className="w-10 h-10 rounded-full bg-secondary/20 text-secondary mx-auto flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5" />
+                    <div className="py-6 text-center space-y-4">
+                      <div className="w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-400 mx-auto flex items-center justify-center">
+                        <CheckCircle className="w-6 h-6" />
                       </div>
-                      <p className="text-xs text-slate-300">
-                        Evening review already recorded for today. Great consistency!
-                      </p>
-                      <button
-                        onClick={onClose}
-                        className="px-4 py-2 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs text-slate-200"
-                      >
-                        Close
-                      </button>
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-white text-base">Evening Review Recorded</h4>
+                        <p className="text-xs text-slate-300 max-w-xs mx-auto">
+                          Great consistency! Today&apos;s accountability reflections and progress have been saved.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setData((prev: any) => ({ ...prev, already_completed: false }));
+                            setStep(1);
+                          }}
+                          className="px-3.5 py-2 rounded-lg bg-surface-card hover:bg-surface-hover border border-border text-xs font-medium text-slate-200 transition-all"
+                        >
+                          Update Reflections
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMode('morning_checkin');
+                            setStep(1);
+                            setAnswers({});
+                            setSubmitted(false);
+                            setResultMessage('');
+                            loadContext('morning_checkin');
+                          }}
+                          className="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold shadow-glow-primary transition-all"
+                        >
+                          View Morning Check-in
+                        </button>
+                        <button
+                          type="button"
+                          onClick={onClose}
+                          className="px-3.5 py-2 rounded-lg bg-surface hover:bg-surface-hover border border-border text-xs text-muted hover:text-white transition-all"
+                        >
+                          Close
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <>
